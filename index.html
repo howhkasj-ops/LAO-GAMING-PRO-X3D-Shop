@@ -2443,7 +2443,7 @@ stroke-linejoin="round">
 
 <button id="loginNav" class="profile-nav-button auth-nav-button" onclick="openLogin()">
 <span class="nav-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/></svg></span>
-<span>ເຂົ້າສູ່ລະບົບ</span>
+<span>ລ້ອກອີນ</span>
 </button>
 
 <button id="registerNav" class="profile-nav-button auth-nav-button" onclick="openLogin();showRegister()">
@@ -3294,6 +3294,12 @@ disabled>
 <!-- =========================
      LOGIN / REGISTER MODAL
 ========================= -->
+<!-- AUTH NOTICE -->
+<div id="authNotice" role="alert" aria-live="polite">
+  <span class="notice-icon" id="authNoticeIcon">!</span>
+  <span id="authNoticeText"></span>
+</div>
+
 <div id="loginModal" class="modal">
 
   <div class="modal-box login-box">
@@ -4921,18 +4927,16 @@ function closeEntryWarning(){
 }
 
 function initEntryWarning(){
+  const confirmed=sessionStorage.getItem("laogaming_warning_confirmed");
+  const registerNav=document.getElementById("registerNav");
 
- const confirmed=sessionStorage.getItem("laogaming_warning_confirmed");
- const registerNav=document.getElementById("registerNav");
-
- if(confirmed!=="1"){
-  const modal=document.getElementById("entryWarningModal");
-  if(modal) modal.classList.add("show");
-  if(registerNav) registerNav.style.display="none";
- }else{
-  updateLoginStatus();
- }
-
+  if(confirmed!=="1"){
+    const modal=document.getElementById("entryWarningModal");
+    if(modal) modal.classList.add("show");
+    if(registerNav) registerNav.style.display="none";
+  }else{
+    updateLoginStatus();
+  }
 }
 
 /* VIDEO */
@@ -5244,8 +5248,8 @@ async function registerAccount(){
       showLogin();
 
       document.getElementById("loginEmail").value=email;
-      showAuthNotice("ລົງທະບຽນສຳເລັດ — OK","success");
       document.getElementById("loginPassword").value="";
+      showAuthNotice("ສະໝັກສຳເລັດ — OK","success");
 
     }else{
       showAuthNotice(result.message || "ລົງທະບຽນບໍ່ສຳເລັດ","error");
