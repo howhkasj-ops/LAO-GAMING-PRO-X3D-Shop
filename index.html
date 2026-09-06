@@ -2192,6 +2192,12 @@ footer{
 ========================= */
 
 /* PROFILE */
+/* AUTH NOTICE */
+#authNotice{position:fixed;top:88px;left:50%;transform:translate(-50%,-18px);width:min(420px,calc(100% - 30px));padding:14px 16px;border-radius:14px;display:none;align-items:center;gap:11px;z-index:99999;color:#fff;font-size:13px;font-weight:900;line-height:1.5;box-shadow:0 14px 35px rgba(0,0,0,.20);opacity:0;transition:.22s ease;}
+#authNotice.show{display:flex;opacity:1;transform:translate(-50%,0);}
+#authNotice.success{background:linear-gradient(135deg,#16a34a,#22c55e);}
+#authNotice.error{background:linear-gradient(135deg,#dc2626,#ef4444);}
+#authNotice .notice-icon{width:28px;height:28px;flex:0 0 28px;border-radius:50%;background:rgba(255,255,255,.20);display:flex;align-items:center;justify-content:center;font-size:17px;}
 .profile-nav-button{height:48px;min-width:120px;padding:0 15px;border:1px solid transparent;border-radius:13px;background:transparent;color:#617187;display:flex;align-items:center;justify-content:center;gap:8px;font-family:inherit;font-size:13px;font-weight:950;cursor:pointer;transition:.22s ease;}
 .auth-nav-button{min-width:145px;}
 .auth-nav-button .nav-icon-box{width:28px;height:28px;}
@@ -4713,7 +4719,7 @@ function openPayment(id){
    const detailModal=document.getElementById("detailModal");
    if(detailModal) detailModal.classList.remove("show");
 
-   alert("ກະລຸນາລ້ອກອີນ ຫຼື ລົງທະບຽນກ່ອນສັ່ງຊື້");
+   showAuthNotice("ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້","error");
    openLogin();
    return;
  }
@@ -4908,24 +4914,21 @@ function closeEntryWarning(){
   "1"
  );
 
+ updateLoginStatus();
+
 }
 
 function initEntryWarning(){
 
- const confirmed=
- sessionStorage.getItem(
-  "laogaming_warning_confirmed"
- );
+ const confirmed=sessionStorage.getItem("laogaming_warning_confirmed");
+ const registerNav=document.getElementById("registerNav");
 
  if(confirmed!=="1"){
-
-  const modal=
-   document.getElementById("entryWarningModal");
-
-  if(modal){
-   modal.classList.add("show");
-  }
-
+  const modal=document.getElementById("entryWarningModal");
+  if(modal) modal.classList.add("show");
+  if(registerNav) registerNav.style.display="none";
+ }else{
+  updateLoginStatus();
  }
 
 }
@@ -5180,6 +5183,20 @@ async function authRequest(action, data){
   return await response.json();
 }
 
+function showAuthNotice(message,type){
+ const box=document.getElementById("authNotice");
+ const text=document.getElementById("authNoticeText");
+ const icon=document.getElementById("authNoticeIcon");
+ if(!box || !text) return;
+ clearTimeout(window.__authNoticeTimer);
+ box.classList.remove("success","error");
+ box.classList.add(type==="success" ? "success" : "error");
+ if(icon) icon.textContent=type==="success" ? "✓" : "!";
+ text.textContent=message;
+ box.classList.add("show");
+ window.__authNoticeTimer=setTimeout(function(){box.classList.remove("show");},3200);
+}
+
 async function registerAccount(){
 
   const name = document.getElementById("registerName").value.trim();
@@ -5188,22 +5205,22 @@ async function registerAccount(){
   const password2 = document.getElementById("registerPassword2").value;
 
   if(localStorage.getItem("laogaming_user")){
-    alert("ບັນຊີນີ້ Login ຢູ່ແລ້ວ");
+    showAuthNotice("ບັນຊີນີ້ Login ຢູ່ແລ້ວ","error");
     return;
   }
 
   if(!name || !email || !password || !password2){
-    alert("ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ");
+    showAuthNotice("ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ","error");
     return;
   }
 
   if(password !== password2){
-    alert("Password ບໍ່ກົງກັນ");
+    showAuthNotice("Password ບໍ່ກົງກັນ","error");
     return;
   }
 
   if(password.length < 6){
-    alert("Password ຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ");
+    showAuthNotice("Password ຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ","error");
     return;
   }
 
@@ -5217,7 +5234,7 @@ async function registerAccount(){
 
     if(result.success){
 
-      alert("ລົງທະບຽນສຳເລັດ ✅");
+      showAuthNotice("ລົງທະບຽນສຳເລັດ — OK","success");
 
       document.getElementById("registerName").value="";
       document.getElementById("registerEmail").value="";
@@ -5230,13 +5247,13 @@ async function registerAccount(){
       document.getElementById("loginPassword").value="";
 
     }else{
-      alert(result.message || "ລົງທະບຽນບໍ່ສຳເລັດ");
+      showAuthNotice(result.message || "ລົງທະບຽນບໍ່ສຳເລັດ","error");
     }
 
   }catch(error){
 
     console.error(error);
-    alert("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ");
+    showAuthNotice("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ","error");
 
   }
 }
@@ -5247,7 +5264,7 @@ async function loginAccount(){
   const password = document.getElementById("loginPassword").value;
 
   if(!email || !password){
-    alert("ກະລຸນາໃສ່ Email ແລະ Password");
+    showAuthNotice("ກະລຸນາໃສ່ Email ແລະ Password","error");
     return;
   }
 
@@ -5265,7 +5282,7 @@ async function loginAccount(){
         JSON.stringify(result.user)
       );
 
-      alert("Login ສຳເລັດ ✅");
+      showAuthNotice("Login ສຳເລັດ — OK","success");
 
       closeLogin();
 
@@ -5284,9 +5301,10 @@ async function loginAccount(){
 
     }else{
 
-      alert(
+      showAuthNotice(
         result.message ||
-        "Email ຫຼື Password ບໍ່ຖືກຕ້ອງ"
+        "Email ຫຼື Password ບໍ່ຖືກຕ້ອງ",
+        "error"
       );
 
     }
@@ -5294,7 +5312,7 @@ async function loginAccount(){
   }catch(error){
 
     console.error(error);
-    alert("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ");
+    showAuthNotice("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ","error");
 
   }
 }
