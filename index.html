@@ -2326,6 +2326,32 @@ footer{
   flex:0 0 23px;
 }
 
+
+
+.modal-title-icon{
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+}
+
+.title-icon-box{
+ width:32px;
+ height:32px;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:10px;
+ background:rgba(8,124,255,.10);
+ color:var(--blue);
+ flex:0 0 32px;
+}
+
+.title-icon-box svg{
+ width:20px;
+ height:20px;
+}
+
 </style>
 </head>
 
@@ -3275,7 +3301,7 @@ disabled>
 ========================= -->
 <div id="profileModal" class="modal">
   <div class="modal-box profile-box">
-    <div class="modal-header"><h3>👤 ໂປຣໄຟລ໌ຂອງຂ້ອຍ</h3></div>
+    <div class="modal-header"><h3 class="modal-title-icon"><span class="title-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/></svg></span><span>ໂປຣໄຟລ໌ຂອງຂ້ອຍ</span></h3></div>
     <div class="modal-body">
       <div class="profile-avatar" id="profileAvatar">U</div>
       <h2 id="profileName">-</h2>
@@ -3305,7 +3331,7 @@ disabled>
   <div class="modal-box login-box">
 
     <div class="modal-header">
-      <h3>🔐 LAO GAMING PRO X3D</h3>
+      <h3 class="modal-title-icon"><span class="title-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="10" width="16" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><circle cx="12" cy="15" r="1"/><path d="M12 16v2"/></svg></span><span>LAO GAMING PRO X3D</span></h3>
     </div>
 
     <div class="modal-body">
