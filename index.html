@@ -2193,7 +2193,7 @@ footer{
 
 /* PROFILE */
 /* AUTH NOTICE */
-#authNotice{position:fixed;top:88px;left:50%;transform:translate(-50%,-18px);width:min(420px,calc(100% - 30px));padding:14px 16px;border-radius:14px;display:none;align-items:center;gap:11px;z-index:99999;color:#fff;font-size:13px;font-weight:900;line-height:1.5;box-shadow:0 14px 35px rgba(0,0,0,.20);opacity:0;transition:.22s ease;}
+#authNotice{position:fixed;top:88px;left:50%;transform:translate(-50%,-18px);width:min(420px,calc(100% - 30px));padding:14px 16px;border-radius:14px;display:none;align-items:center;gap:11px;z-index:2147483647;color:#fff;font-size:13px;font-weight:900;line-height:1.5;box-shadow:0 14px 35px rgba(0,0,0,.20);opacity:0;transition:.22s ease;}
 #authNotice.show{display:flex;opacity:1;transform:translate(-50%,0);}
 #authNotice.success{background:linear-gradient(135deg,#16a34a,#22c55e);}
 #authNotice.error{background:linear-gradient(135deg,#dc2626,#ef4444);}
@@ -4719,8 +4719,10 @@ function openPayment(id){
    const detailModal=document.getElementById("detailModal");
    if(detailModal) detailModal.classList.remove("show");
 
-   showAuthNotice("ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້","error");
    openLogin();
+   setTimeout(function(){
+     showAuthNotice("ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້","error");
+   },80);
    return;
  }
 
@@ -5234,8 +5236,6 @@ async function registerAccount(){
 
     if(result.success){
 
-      showAuthNotice("ລົງທະບຽນສຳເລັດ — OK","success");
-
       document.getElementById("registerName").value="";
       document.getElementById("registerEmail").value="";
       document.getElementById("registerPassword").value="";
@@ -5244,6 +5244,7 @@ async function registerAccount(){
       showLogin();
 
       document.getElementById("loginEmail").value=email;
+      showAuthNotice("ລົງທະບຽນສຳເລັດ — OK","success");
       document.getElementById("loginPassword").value="";
 
     }else{
