@@ -3568,8 +3568,8 @@ const products=[
  id:26,
  name:"𝐄𝐏 #𝟎𝟎𝟐𝟔",
  price:380000,
- stock:true,
- stockQty:1,
+ stock:false,
+ stockQty:0,
  image:"https://i.ibb.co/Z6JT28DW/0297472f-db53-4489-acdf-4a5f8681f410.jpg",
  gallery:[
  "https://i.ibb.co/39wjbyJ9/2a0ce9a0-d9ff-4f78-b132-95106eb41400.jpg",
@@ -3677,9 +3677,14 @@ const products=[
 {
  id:19,
  name:"𝐄𝐏 #𝟎𝟎𝟏𝟗",
- price:350000,
+ price:150000,
  stock:false,
  stockQty:0,
+ details:[
+  "ເມວປິດໃຊ້ງານຮັບໄດ້ມາເອົາ",
+  "ເມວກູ້ເດີອັນນີ້ກັບເມວເກມອັນດຽວກັນ",
+  "ຂໍ້ມູນເມວມີໃຫ້ຄົບໄປແກ້ເອົາ"
+ ],
  image:"https://i.ibb.co/TxJRT2KY/beeb10a7-cd42-4106-bb4c-159a4501fda2.jpg"
 },
 
@@ -4025,17 +4030,16 @@ function renderProducts(){
  const home=document.getElementById("homeProducts");
  const shop=document.getElementById("shopProducts");
 
+ if(!home || !shop)return;
+
  home.innerHTML="";
  shop.innerHTML="";
 
- const availableProducts=products.filter(product=>
-  product.stock===true &&
-  Number(product.stockQty||0)>0
- );
-
- availableProducts.forEach(product=>{
-  home.appendChild(createCard(product));
- });
+ /*
+  * ສະແດງ EP ທັງໝົດ
+  * ສິນຄ້າທີ່ຍັງມີຈະຢູ່ກ່ອນ
+  * ສິນຄ້າທີ່ຂາຍແລ້ວຈະຢູ່ຕໍ່ທ້າຍ
+  */
 
  const allProducts=[...products].sort((a,b)=>{
 
@@ -4055,6 +4059,7 @@ function renderProducts(){
  });
 
  allProducts.forEach(product=>{
+  home.appendChild(createCard(product));
   shop.appendChild(createCard(product));
  });
 
