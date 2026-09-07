@@ -5201,18 +5201,28 @@ async function authRequest(action, data){
   body.append("action", action);
 
   Object.keys(data || {}).forEach(function(key){
-    body.append(key, data[key]);
+    body.append(key, data[key] == null ? "" : data[key]);
   });
 
+  // Google Apps Script Web App: avoid custom headers so the browser does not
+  // trigger a CORS preflight request. URLSearchParams is sent as a simple POST.
   const response = await fetch(LOGIN_API,{
     method:"POST",
-    headers:{
-      "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"
-    },
-    body:body.toString()
+    body:body
   });
 
-  return await response.json();
+  const text = await response.text();
+
+  if(!response.ok){
+    throw new Error("HTTP " + response.status + ": " + text.slice(0,300));
+  }
+
+  try{
+    return JSON.parse(text);
+  }catch(parseError){
+    console.error("Login API returned non-JSON:", text);
+    throw new Error("Login API ບໍ່ໄດ້ສົ່ງ JSON ກັບຄືນ");
+  }
 }
 
 function showAuthNotice(message,type){
@@ -5232,27 +5242,67 @@ function showAuthNotice(message,type){
 async function registerAccount(){
 
   const name = document.getElementById("registerName").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
+  const email = document.getElementById("registerEmail").value.trim().toLowerCase();
   const password = document.getElementById("registerPassword").value;
   const password2 = document.getElementById("registerPassword2").value;
 
+  // ຖ້າ Login ຢູ່ແລ້ວ ຕ້ອງ Logout ກ່ອນສະໝັກບັນຊີໃໝ່
   if(localStorage.getItem("laogaming_user")){
-    showAuthNotice("ບັນຊີນີ້ Login ຢູ່ແລ້ວ","error");
+    showAuthNotice(
+      "ບັນຊີນີ້ Login ຢູ່ແລ້ວ — ກະລຸນາ Logout ກ່ອນສະໝັກບັນຊີໃໝ່",
+      "error"
+    );
     return;
   }
 
-  if(!name || !email || !password || !password2){
-    showAuthNotice("ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ","error");
+  // ກວດຊື່
+  if(!name){
+    showAuthNotice("ກະລຸນາໃສ່ຊື່ຜູ້ໃຊ້", "error");
     return;
   }
 
+  // ກວດ Gmail
+  if(!email){
+    showAuthNotice("ກະລຸນາໃສ່ Gmail", "error");
+    return;
+  }
+
+  const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+
+  if(!gmailPattern.test(email)){
+    showAuthNotice(
+      "ກະລຸນາໃສ່ Gmail ໃຫ້ຖືກຕ້ອງ — ຕົວຢ່າງ: example@gmail.com",
+      "error"
+    );
+    return;
+  }
+
+  // ກວດລະຫັດຜ່ານ
+  if(!password){
+    showAuthNotice("ກະລຸນາໃສ່ລະຫັດຜ່ານ", "error");
+    return;
+  }
+
+  // ກວດຊ່ອງຢືນຢັນລະຫັດ
+  if(!password2){
+    showAuthNotice("ກະລຸນາໃສ່ລະຫັດຜ່ານໃນຊ່ອງຢືນຢັນ", "error");
+    return;
+  }
+
+  // ລະຫັດຜ່ານທັງສອງຊ່ອງຕ້ອງກົງກັນ
   if(password !== password2){
-    showAuthNotice("Password ບໍ່ກົງກັນ","error");
+    showAuthNotice(
+      "ລະຫັດຜ່ານບໍ່ກົງກັນ — ກະລຸນາກວດສອບແລະໃສ່ລະຫັດໃຫ້ກົງກັນ",
+      "error"
+    );
     return;
   }
 
   if(password.length < 6){
-    showAuthNotice("Password ຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ","error");
+    showAuthNotice(
+      "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ",
+      "error"
+    );
     return;
   }
 
@@ -5275,17 +5325,73 @@ async function registerAccount(){
 
       document.getElementById("loginEmail").value=email;
       document.getElementById("loginPassword").value="";
-      showAuthNotice("ສະໝັກສຳເລັດ — OK","success");
+
+      showAuthNotice(
+        "ສະໝັກບັນຊີສຳເລັດ — ສາມາດ Login ໄດ້ແລ້ວ",
+        "success"
+      );
 
     }else{
-      showAuthNotice(result.message || "ລົງທະບຽນບໍ່ສຳເລັດ","error");
+
+      const msg = String(result.message || result.error || "").trim();
+      const lower = msg.toLowerCase();
+
+      // Gmail ມີບັນຊີແລ້ວ
+      if(
+        (lower.includes("email") || lower.includes("gmail") || msg.includes("ເມວ"))
+        &&
+        (
+          lower.includes("exist") ||
+          lower.includes("already") ||
+          lower.includes("duplicate") ||
+          msg.includes("ມີ") ||
+          msg.includes("ແລ້ວ")
+        )
+      ){
+        showAuthNotice(
+          "Gmail ນີ້ມີບັນຊີແລ້ວ — ກະລຸນາໃສ່ Gmail ໃໝ່",
+          "error"
+        );
+        return;
+      }
+
+      // ຊື່ມີບັນຊີແລ້ວ
+      if(
+        (
+          lower.includes("name") ||
+          lower.includes("username") ||
+          msg.includes("ຊື່")
+        )
+        &&
+        (
+          lower.includes("exist") ||
+          lower.includes("already") ||
+          lower.includes("duplicate") ||
+          msg.includes("ມີ") ||
+          msg.includes("ແລ້ວ")
+        )
+      ){
+        showAuthNotice(
+          "ຊື່ນີ້ມີບັນຊີແລ້ວ — ກະລຸນາໃສ່ຊື່ໃໝ່",
+          "error"
+        );
+        return;
+      }
+
+      showAuthNotice(
+        msg || "ການສະໝັກບັນຊີບໍ່ສຳເລັດ — ກະລຸນາກວດຂໍ້ມູນແລະລອງໃໝ່",
+        "error"
+      );
     }
 
   }catch(error){
 
     console.error(error);
-    showAuthNotice("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ","error");
 
+    showAuthNotice(
+      "ບໍ່ສາມາດເຊື່ອມຕໍ່ລະບົບໄດ້ — ກະລຸນາລອງໃໝ່ອີກຄັ້ງ",
+      "error"
+    );
   }
 }
 
