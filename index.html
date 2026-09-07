@@ -601,10 +601,123 @@ body::after{
  box-shadow:0 12px 25px rgba(8,124,255,.20);
 }
 
+
+.latest-users-card{
+ margin-top:18px;
+ padding:20px;
+ background:rgba(255,255,255,.88);
+ backdrop-filter:blur(18px);
+ -webkit-backdrop-filter:blur(18px);
+ border:1px solid rgba(255,255,255,.95);
+ border-radius:20px;
+ box-shadow:0 12px 35px rgba(0,126,255,.10);
+}
+.latest-users-head{
+ display:flex;
+ align-items:center;
+ justify-content:space-between;
+ gap:15px;
+ margin-bottom:14px;
+}
+.latest-users-title{
+ font-size:18px;
+ font-weight:950;
+}
+.latest-users-subtitle{
+ margin-top:4px;
+ color:var(--muted);
+ font-size:12px;
+ font-weight:700;
+}
+.latest-users-count{
+ min-width:42px;
+ height:42px;
+ padding:0 12px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:13px;
+ background:linear-gradient(135deg,#087cff,#22aaff);
+ color:#fff;
+ font-size:16px;
+ font-weight:950;
+ box-shadow:0 8px 20px rgba(8,124,255,.18);
+}
+.latest-users-list{
+ display:grid;
+ grid-template-columns:repeat(2,minmax(0,1fr));
+ gap:10px;
+}
+.latest-user-item{
+ display:flex;
+ align-items:center;
+ gap:12px;
+ min-width:0;
+ padding:12px 13px;
+ border:1px solid #e2f2ff;
+ border-radius:14px;
+ background:rgba(247,252,255,.9);
+}
+.latest-user-avatar{
+ width:38px;
+ height:38px;
+ flex:0 0 38px;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ border-radius:12px;
+ background:linear-gradient(135deg,#087cff,#22aaff);
+ color:#fff;
+ font-size:15px;
+ font-weight:950;
+}
+.latest-user-info{
+ min-width:0;
+ flex:1;
+}
+.latest-user-name{
+ font-size:14px;
+ font-weight:900;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+.latest-user-email{
+ margin-top:3px;
+ color:var(--muted);
+ font-size:11px;
+ font-weight:700;
+ white-space:nowrap;
+ overflow:hidden;
+ text-overflow:ellipsis;
+}
+.latest-user-date{
+ color:#087cff;
+ font-size:10px;
+ font-weight:800;
+ white-space:nowrap;
+}
+.latest-user-empty{
+ grid-column:1/-1;
+ padding:20px;
+ text-align:center;
+ color:var(--muted);
+ font-weight:800;
+}
+@media(max-width:900px){
+ .stock-summary{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:600px){
+ .stock-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+ .stock-box{padding:18px 8px 17px;border-radius:16px;}
+ .latest-users-card{padding:15px;}
+ .latest-users-list{grid-template-columns:1fr;}
+ .latest-users-title{font-size:16px;}
+}
 .stock-summary{
  margin-top:22px;
  display:grid;
- grid-template-columns:repeat(3,1fr);
+ grid-template-columns:repeat(4,minmax(0,1fr));
  gap:16px;
 }
 
@@ -2722,6 +2835,19 @@ onclick="openVideo('game')">
 
 </div>
 
+<div class="latest-users-card">
+  <div class="latest-users-head">
+    <div>
+      <div class="latest-users-title">ລູກຄ້າທີ່ສະໝັກລ່າສຸດ</div>
+      <div class="latest-users-subtitle">ສະແດງ 10 ບັນຊີລ່າສຸດ ແລະອັບເດດອັດຕະໂນມັດ</div>
+    </div>
+    <div id="latestUsersCount" class="latest-users-count">0</div>
+  </div>
+  <div id="latestUsers" class="latest-users-list">
+    <div class="latest-user-empty">ກຳລັງໂຫຼດ...</div>
+  </div>
+</div>
+
 <div class="section-title">
 
 <h2>
@@ -2784,8 +2910,13 @@ onclick="showPage('shop')">
 <div class="stock-summary">
 
 <div class="stock-box">
+<div id="userCount" class="stock-number">0</div>
+<div class="stock-label">ຜູ້ໃຊ້ທັງໝົດ</div>
+</div>
+
+<div class="stock-box">
 <div id="availableCount" class="stock-number">0</div>
-<div class="stock-label">ສິນຄ້າທີ່ສະຕ໋ອກທັງໝົດ</div>
+<div class="stock-label">ສິນຄ້າທັງໝົດ</div>
 </div>
 
 <div class="stock-box">
@@ -3996,6 +4127,58 @@ function createCard(product){
 
 }
 
+async function updateUserStats(){
+  const countEl=document.getElementById("userCount");
+  const listEl=document.getElementById("latestUsers");
+  const latestCountEl=document.getElementById("latestUsersCount");
+  if(!countEl) return;
+
+  try{
+    const result=await authRequest("stats",{});
+
+    if(result && result.success){
+      const total=Number(result.users||0);
+      countEl.textContent=total.toLocaleString();
+
+      const latest=Array.isArray(result.latestUsers) ? result.latestUsers : [];
+      if(latestCountEl) latestCountEl.textContent=latest.length.toLocaleString();
+
+      if(listEl){
+        if(!latest.length){
+          listEl.innerHTML='<div class="latest-user-empty">ຍັງບໍ່ມີບັນຊີ</div>';
+        }else{
+          listEl.innerHTML=latest.map(function(user){
+            const name=String(user.name||"User");
+            const email=String(user.email||"-");
+            const date=String(user.registerDate||"");
+            const first=name.trim().charAt(0).toUpperCase() || "U";
+            return `
+              <div class="latest-user-item">
+                <div class="latest-user-avatar">${first}</div>
+                <div class="latest-user-info">
+                  <div class="latest-user-name">${escapeHtml(name)}</div>
+                  <div class="latest-user-email">${escapeHtml(email)}</div>
+                </div>
+                <div class="latest-user-date">${escapeHtml(date)}</div>
+              </div>`;
+          }).join("");
+        }
+      }
+    }
+  }catch(error){
+    console.error("User stats error:",error);
+  }
+}
+
+function escapeHtml(value){
+  return String(value==null?"":value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/\"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
 function updateStockSummary(){
 
  const totalStock=products.length;
@@ -5201,18 +5384,28 @@ async function authRequest(action, data){
   body.append("action", action);
 
   Object.keys(data || {}).forEach(function(key){
-    body.append(key, data[key]);
+    body.append(key, data[key] == null ? "" : data[key]);
   });
 
+  // Google Apps Script Web App: avoid custom headers so the browser does not
+  // trigger a CORS preflight request. URLSearchParams is sent as a simple POST.
   const response = await fetch(LOGIN_API,{
     method:"POST",
-    headers:{
-      "Content-Type":"application/x-www-form-urlencoded;charset=UTF-8"
-    },
-    body:body.toString()
+    body:body
   });
 
-  return await response.json();
+  const text = await response.text();
+
+  if(!response.ok){
+    throw new Error("HTTP " + response.status + ": " + text.slice(0,300));
+  }
+
+  try{
+    return JSON.parse(text);
+  }catch(parseError){
+    console.error("Login API returned non-JSON:", text);
+    throw new Error("Login API ບໍ່ໄດ້ສົ່ງ JSON ກັບຄືນ");
+  }
 }
 
 function showAuthNotice(message,type){
@@ -5232,27 +5425,67 @@ function showAuthNotice(message,type){
 async function registerAccount(){
 
   const name = document.getElementById("registerName").value.trim();
-  const email = document.getElementById("registerEmail").value.trim();
+  const email = document.getElementById("registerEmail").value.trim().toLowerCase();
   const password = document.getElementById("registerPassword").value;
   const password2 = document.getElementById("registerPassword2").value;
 
+  // ຖ້າ Login ຢູ່ແລ້ວ ຕ້ອງ Logout ກ່ອນສະໝັກບັນຊີໃໝ່
   if(localStorage.getItem("laogaming_user")){
-    showAuthNotice("ບັນຊີນີ້ Login ຢູ່ແລ້ວ","error");
+    showAuthNotice(
+      "ບັນຊີນີ້ Login ຢູ່ແລ້ວ — ກະລຸນາ Logout ກ່ອນສະໝັກບັນຊີໃໝ່",
+      "error"
+    );
     return;
   }
 
-  if(!name || !email || !password || !password2){
-    showAuthNotice("ກະລຸນາປ້ອນຂໍ້ມູນໃຫ້ຄົບ","error");
+  // ກວດຊື່
+  if(!name){
+    showAuthNotice("ກະລຸນາໃສ່ຊື່ຜູ້ໃຊ້", "error");
     return;
   }
 
+  // ກວດ Gmail
+  if(!email){
+    showAuthNotice("ກະລຸນາໃສ່ Gmail", "error");
+    return;
+  }
+
+  const gmailPattern = /^[a-zA-Z0-9._%+-]+@gmail\.com$/i;
+
+  if(!gmailPattern.test(email)){
+    showAuthNotice(
+      "ກະລຸນາໃສ່ Gmail ໃຫ້ຖືກຕ້ອງ — ຕົວຢ່າງ: example@gmail.com",
+      "error"
+    );
+    return;
+  }
+
+  // ກວດລະຫັດຜ່ານ
+  if(!password){
+    showAuthNotice("ກະລຸນາໃສ່ລະຫັດຜ່ານ", "error");
+    return;
+  }
+
+  // ກວດຊ່ອງຢືນຢັນລະຫັດ
+  if(!password2){
+    showAuthNotice("ກະລຸນາໃສ່ລະຫັດຜ່ານໃນຊ່ອງຢືນຢັນ", "error");
+    return;
+  }
+
+  // ລະຫັດຜ່ານທັງສອງຊ່ອງຕ້ອງກົງກັນ
   if(password !== password2){
-    showAuthNotice("Password ບໍ່ກົງກັນ","error");
+    showAuthNotice(
+      "ລະຫັດຜ່ານບໍ່ກົງກັນ — ກະລຸນາກວດສອບແລະໃສ່ລະຫັດໃຫ້ກົງກັນ",
+      "error"
+    );
     return;
   }
 
   if(password.length < 6){
-    showAuthNotice("Password ຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ","error");
+    showAuthNotice(
+      "ລະຫັດຜ່ານຕ້ອງມີຢ່າງໜ້ອຍ 6 ຕົວ",
+      "error"
+    );
     return;
   }
 
@@ -5275,17 +5508,75 @@ async function registerAccount(){
 
       document.getElementById("loginEmail").value=email;
       document.getElementById("loginPassword").value="";
-      showAuthNotice("ສະໝັກສຳເລັດ — OK","success");
+
+      showAuthNotice(
+        "ສະໝັກບັນຊີສຳເລັດ — ສາມາດ Login ໄດ້ແລ້ວ",
+        "success"
+      );
+
+      updateUserStats();
 
     }else{
-      showAuthNotice(result.message || "ລົງທະບຽນບໍ່ສຳເລັດ","error");
+
+      const msg = String(result.message || result.error || "").trim();
+      const lower = msg.toLowerCase();
+
+      // Gmail ມີບັນຊີແລ້ວ
+      if(
+        (lower.includes("email") || lower.includes("gmail") || msg.includes("ເມວ"))
+        &&
+        (
+          lower.includes("exist") ||
+          lower.includes("already") ||
+          lower.includes("duplicate") ||
+          msg.includes("ມີ") ||
+          msg.includes("ແລ້ວ")
+        )
+      ){
+        showAuthNotice(
+          "Gmail ນີ້ມີບັນຊີແລ້ວ — ກະລຸນາໃສ່ Gmail ໃໝ່",
+          "error"
+        );
+        return;
+      }
+
+      // ຊື່ມີບັນຊີແລ້ວ
+      if(
+        (
+          lower.includes("name") ||
+          lower.includes("username") ||
+          msg.includes("ຊື່")
+        )
+        &&
+        (
+          lower.includes("exist") ||
+          lower.includes("already") ||
+          lower.includes("duplicate") ||
+          msg.includes("ມີ") ||
+          msg.includes("ແລ້ວ")
+        )
+      ){
+        showAuthNotice(
+          "ຊື່ນີ້ມີບັນຊີແລ້ວ — ກະລຸນາໃສ່ຊື່ໃໝ່",
+          "error"
+        );
+        return;
+      }
+
+      showAuthNotice(
+        msg || "ການສະໝັກບັນຊີບໍ່ສຳເລັດ — ກະລຸນາກວດຂໍ້ມູນແລະລອງໃໝ່",
+        "error"
+      );
     }
 
   }catch(error){
 
     console.error(error);
-    showAuthNotice("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ","error");
 
+    showAuthNotice(
+      "ບໍ່ສາມາດເຊື່ອມຕໍ່ລະບົບໄດ້ — ກະລຸນາລອງໃໝ່ອີກຄັ້ງ",
+      "error"
+    );
   }
 }
 
@@ -5414,6 +5705,7 @@ function logoutAccount(){
 }
 
 updateLoginStatus();
+updateUserStats();
 
 </script>
 
