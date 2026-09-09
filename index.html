@@ -193,95 +193,132 @@ body::after{
 .nav{
  display:flex;
  align-items:center;
- gap:9px;
- padding:6px;
- border:1px solid #dcefff;
- background:rgba(247,252,255,.88);
- border-radius:17px;
- box-shadow:
- 0 8px 25px rgba(0,126,255,.07),
- inset 0 1px 0 rgba(255,255,255,.9);
+ justify-content:flex-end;
+ gap:4px;
+ padding:0;
+ border:0;
+ background:transparent;
+ box-shadow:none;
 }
 
 .nav button{
  position:relative;
- height:48px;
- min-width:112px;
- padding:0 15px;
- border:1px solid transparent;
- border-radius:13px;
+ min-width:72px;
+ height:58px;
+ padding:6px 9px 5px;
+ border:0;
+ border-radius:12px;
  background:transparent;
- color:#617187;
+ color:#65758a;
  display:flex;
+ flex-direction:column;
  align-items:center;
  justify-content:center;
- gap:8px;
+ gap:4px;
  font-family:inherit;
- font-size:13px;
- font-weight:950;
+ font-size:10px;
+ font-weight:900;
  cursor:pointer;
- transition:.22s ease,transform .22s ease;
+ transition:all .2s ease;
+}
+
+.nav button::after{
+ content:"";
+ position:absolute;
+ left:50%;
+ bottom:1px;
+ width:0;
+ height:3px;
+ border-radius:99px;
+ transform:translateX(-50%);
+ background:linear-gradient(90deg,#087cff,#20b5ff);
+ box-shadow:0 0 12px rgba(8,124,255,.35);
+ transition:.22s ease;
 }
 
 .nav button:hover{
- color:var(--blue);
- background:#fff;
+ color:#087cff;
+ background:rgba(8,124,255,.055);
  transform:translateY(-1px);
 }
 
+.nav button:hover::after{
+ width:28px;
+}
+
 .nav button.active{
- color:#fff;
- background:linear-gradient(
- 135deg,
- #087cff 0%,
- #1297ff 50%,
- #20b5ff 100%);
- border-color:#087cff;
- box-shadow:
- 0 8px 22px rgba(8,124,255,.24),
- inset 0 1px 0 rgba(255,255,255,.25);
+ color:#087cff;
+ background:linear-gradient(180deg,rgba(8,124,255,.10),rgba(8,124,255,.035));
+ border:0;
+ box-shadow:none;
 }
 
 .nav button.active::after{
- content:"";
- position:absolute;
- width:20px;
- height:3px;
- border-radius:20px;
- bottom:-7px;
- left:50%;
- transform:translateX(-50%);
- background:#087cff;
- box-shadow:0 0 10px rgba(8,124,255,.45);
+ width:30px;
+ bottom:1px;
 }
 
 .nav-icon-box{
- width:30px;
- height:30px;
+ width:34px;
+ height:34px;
  display:flex;
  align-items:center;
  justify-content:center;
- border-radius:9px;
- background:#edf8ff;
- color:var(--blue);
- transition:.22s;
+ border-radius:11px;
+ background:#f0f8ff;
+ color:#6c7d91;
+ transition:all .2s ease;
 }
 
 .nav button:hover .nav-icon-box{
+ color:#087cff;
  background:#e4f4ff;
+ transform:translateY(-1px);
 }
 
 .nav button.active .nav-icon-box{
- background:rgba(255,255,255,.20);
- color:#fff;
+ color:#087cff;
+ background:#e2f3ff;
+ box-shadow:0 6px 16px rgba(8,124,255,.13),inset 0 0 0 1px rgba(8,124,255,.06);
+}
+
+.nav-icon-box img{
+ width:20px;
+ height:20px;
+ object-fit:contain;
+ display:block;
 }
 
 .nav-contact{
+ color:#65758a!important;
+}
+
+.nav-contact:hover,
+.nav-contact.active{
  color:#087cff!important;
 }
 
-.nav-contact.active{
- color:#fff!important;
+@media(max-width:900px){
+ .header-inner{height:70px;padding:0 12px;}
+ .logo{gap:8px;}
+ .logo-img-wrap{width:43px;height:43px;border-radius:12px;}
+ .logo img{border-radius:10px;}
+ .logo h1{font-size:13px;}
+ .logo span{font-size:7px;letter-spacing:1.2px;}
+ .nav{gap:1px;}
+ .nav button{min-width:58px;height:54px;padding:5px 6px;font-size:9px;}
+ .nav-icon-box{width:31px;height:31px;border-radius:10px;}
+ .nav button.active::after{width:24px;}
+}
+
+@media(max-width:680px){
+ .header-inner{height:64px;padding:0 8px;}
+ .logo h1{font-size:11px;}
+ .logo span{display:none;}
+ .logo-img-wrap{width:39px;height:39px;}
+ .nav button{min-width:47px;height:52px;padding:4px 3px;font-size:0;gap:0;}
+ .nav-icon-box{width:32px;height:32px;}
+ .nav button.active::after{width:20px;}
 }
 
 .page{
@@ -2688,6 +2725,215 @@ height:25px;
  .detail-price{font-size:21px;}
 }
 
+
+/* =========================
+   GMAIL SHOP SYSTEM
+========================= */
+.gmail-nav-icon img{
+  width:22px;
+  height:22px;
+  object-fit:contain;
+}
+.gmail-page{
+  width:100%;
+  max-width:1200px;
+  margin:auto;
+  padding:24px 20px 80px;
+}
+.gmail-hero{
+  padding:24px;
+  border-radius:24px;
+  background:linear-gradient(135deg,#fff,#f5fbff);
+  border:1px solid #d7efff;
+  box-shadow:0 15px 45px rgba(0,126,255,.10);
+}
+.gmail-hero-head{
+  display:flex;
+  align-items:center;
+  gap:15px;
+}
+.gmail-logo{
+  width:66px;height:66px;flex:0 0 66px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:18px;
+  background:#fff;
+  border:1px solid #dcefff;
+  box-shadow:0 8px 22px rgba(0,0,0,.07);
+}
+.gmail-logo img{width:45px;height:45px;object-fit:contain}
+.gmail-hero h2{font-size:25px;font-weight:950}
+.gmail-hero p{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.6}
+.gmail-warning{
+  margin-top:18px;
+  padding:16px;
+  border-radius:17px;
+  background:#fff7f7;
+  border:1px solid #ffd2d2;
+  color:#7f1d1d;
+}
+.gmail-warning-title{
+  display:flex;align-items:center;gap:7px;
+  color:#dc2626;font-size:14px;font-weight:950;
+}
+.gmail-warning-list{
+  margin-top:9px;display:grid;gap:6px;
+  font-size:12px;font-weight:800;line-height:1.65;
+}
+.gmail-packages{
+  margin-top:22px;
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+}
+.gmail-package{
+  position:relative;
+  padding:18px;
+  border:2px solid #dcefff;
+  border-radius:18px;
+  background:#fff;
+  cursor:pointer;
+  text-align:left;
+  transition:.2s;
+  font-family:inherit;
+}
+.gmail-package:hover{transform:translateY(-3px);border-color:#8fd3ff;box-shadow:0 12px 28px rgba(0,126,255,.11)}
+.gmail-package.selected{
+  border-color:#087cff;
+  background:linear-gradient(135deg,#f0f9ff,#fff);
+  box-shadow:0 10px 25px rgba(8,124,255,.15);
+}
+.gmail-package .gmail-p-icon{
+  width:42px;height:42px;
+  display:flex;align-items:center;justify-content:center;
+  border-radius:12px;background:#fff;
+  border:1px solid #e2eff8;
+  margin-bottom:10px;
+}
+.gmail-package .gmail-p-icon img{width:28px;height:28px}
+.gmail-package strong{display:block;font-size:16px;font-weight:950}
+.gmail-package .gmail-price{
+  margin-top:7px;color:#087cff;font-size:17px;font-weight:950;
+}
+.gmail-package small{
+  display:block;margin-top:5px;color:var(--muted);font-size:10px;
+}
+.gmail-package .gmail-selected{
+  display:none;position:absolute;right:10px;top:10px;
+  width:22px;height:22px;border-radius:50%;
+  align-items:center;justify-content:center;
+  color:#fff;background:#087cff;font-size:12px;font-weight:950;
+}
+.gmail-package.selected .gmail-selected{display:flex}
+.gmail-order-bar{
+  margin-top:20px;
+  padding:17px;
+  border-radius:17px;
+  background:linear-gradient(135deg,#087cff,#20a9ff);
+  color:#fff;
+  display:flex;align-items:center;justify-content:space-between;gap:15px;
+}
+.gmail-order-info strong{display:block;font-size:15px;font-weight:950}
+.gmail-order-info span{display:block;margin-top:4px;font-size:11px;opacity:.9}
+.gmail-order-btn{
+  border:0;border-radius:13px;padding:13px 20px;
+  background:#fff;color:#087cff;
+  font-family:inherit;font-size:14px;font-weight:950;
+  cursor:pointer;white-space:nowrap;
+  box-shadow:0 8px 20px rgba(0,0,0,.13);
+}
+.gmail-order-btn:disabled{opacity:.55;cursor:not-allowed}
+.gmail-payment-box{
+  text-align:center;
+}
+.gmail-payment-head{
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.gmail-payment-head img{width:32px;height:32px}
+.gmail-payment-title{font-size:21px;font-weight:950}
+.gmail-payment-package{margin-top:5px;color:var(--muted);font-size:12px}
+.gmail-payment-total{
+  margin-top:10px;color:#087cff;font-size:27px;font-weight:950;
+}
+.gmail-payment-methods{
+  margin-top:18px;display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+}
+.gmail-pay-method{
+  border:2px solid #e1f1fb;border-radius:15px;background:#fff;
+  padding:11px;display:flex;align-items:center;gap:9px;
+  cursor:pointer;text-align:left;font-family:inherit;
+}
+.gmail-pay-method.active{border-color:#087cff;background:#f3faff}
+.gmail-pay-method img{width:43px;height:43px;object-fit:contain}
+.gmail-pay-method strong{font-size:12px;font-weight:950}
+.gmail-pay-method span{display:block;margin-top:3px;color:var(--muted);font-size:9px}
+.gmail-payment-bank{
+  margin-top:14px;padding:11px;border-radius:12px;
+  background:#eef8ff;border:1px solid #d7edff;
+  font-size:12px;color:#5b7087;
+}
+.gmail-payment-bank b{color:#087cff}
+.gmail-qr-label{margin-top:14px;color:#70849a;font-size:11px;font-weight:900}
+.gmail-qr{
+  width:250px;height:250px;margin:11px auto 15px;
+  padding:9px;background:#fff;border:1px solid var(--border);
+  border-radius:16px;box-shadow:0 10px 30px rgba(0,126,255,.10);
+}
+.gmail-qr img{width:100%;height:100%;object-fit:contain}
+.gmail-transfer-note{
+  padding:12px;border-radius:12px;background:#eff9ff;
+  color:#52708c;font-size:11px;line-height:1.7;
+}
+.gmail-wa-btn{
+  width:100%;margin-top:13px;padding:14px;border:0;border-radius:13px;
+  background:#25D366;color:#fff;font-family:inherit;
+  font-size:14px;font-weight:950;cursor:pointer;
+  box-shadow:0 8px 20px rgba(37,211,102,.18);
+}
+.gmail-wa-btn:hover{transform:translateY(-1px)}
+@media(max-width:900px){
+  .gmail-packages{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:700px){
+  .gmail-page{padding:16px 10px 60px}
+  .gmail-hero{padding:16px}
+  .gmail-hero h2{font-size:20px}
+  .gmail-packages{grid-template-columns:repeat(2,1fr);gap:9px}
+  .gmail-package{padding:13px}
+  .gmail-order-bar{align-items:stretch;flex-direction:column}
+  .gmail-order-btn{width:100%}
+  .gmail-payment-methods{grid-template-columns:1fr}
+  .gmail-qr{width:220px;height:220px}
+}
+
+
+/* ===== PROFESSIONAL WEB NAVIGATION ===== */
+.header{position:sticky;top:0;z-index:1000;background:rgba(255,255,255,.88);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-bottom:1px solid rgba(205,229,246,.75);}
+.header-inner{max-width:1280px;height:82px;padding:0 18px;gap:22px;}
+.nav{flex:0 1 auto;display:flex;align-items:center;gap:4px;padding:5px;border:1px solid #d7e8f5;background:rgba(248,252,255,.96);border-radius:18px;box-shadow:0 8px 28px rgba(20,93,140,.09),inset 0 1px 0 #fff;}
+.nav button,.profile-nav-button{position:relative;height:54px;min-width:108px;padding:5px 13px;border:0;border-radius:14px;background:transparent;color:#64748b;display:flex;align-items:center;justify-content:center;gap:9px;font-family:inherit;font-size:12px;font-weight:900;cursor:pointer;transition:all .2s ease;}
+.auth-nav-button{min-width:132px;}
+.nav button::before,.profile-nav-button::before{content:"";position:absolute;inset:4px;border-radius:11px;background:transparent;transition:.2s ease;z-index:-1;}
+.nav button:hover,.profile-nav-button:hover{color:#087cff;transform:none;background:#f3f9ff;}
+.nav button:hover::before,.profile-nav-button:hover::before{background:#fff;box-shadow:0 5px 16px rgba(8,124,255,.08);}
+.nav button.active{color:#fff;background:linear-gradient(135deg,#087cff,#159cff);box-shadow:0 8px 20px rgba(8,124,255,.23);}
+.nav button.active::before{background:transparent;}
+.nav button.active::after{content:"";position:absolute;width:26px;height:3px;bottom:-7px;left:50%;transform:translateX(-50%);border-radius:99px;background:#087cff;box-shadow:0 0 12px rgba(8,124,255,.5);}
+.nav-icon-box{position:relative;z-index:1;width:32px;height:32px;flex:0 0 32px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:#eaf6ff;color:#087cff;box-shadow:inset 0 0 0 1px rgba(8,124,255,.07);transition:.2s ease;}
+.nav-icon-box svg{width:19px;height:19px;display:block;}
+.nav button:hover .nav-icon-box,.profile-nav-button:hover .nav-icon-box{background:#e0f2ff;transform:scale(1.04);}
+.nav button.active .nav-icon-box{background:rgba(255,255,255,.2);color:#fff;box-shadow:inset 0 0 0 1px rgba(255,255,255,.18);}
+.nav-contact{color:#64748b!important;}
+.nav-contact:hover{color:#087cff!important;}
+.gmail-nav-icon{background:#fff1f1!important;color:#ea4335!important;}
+.gmail-nav-icon img{width:20px!important;height:20px!important;object-fit:contain;}
+.profile-nav-button{color:#64748b;}
+.auth-nav-button .nav-icon-box{width:30px;height:30px;flex-basis:30px;}
+@media(max-width:1000px){.header-inner{gap:10px}.logo h1{font-size:14px}.nav button,.profile-nav-button{min-width:88px;padding:5px 9px}.auth-nav-button{min-width:105px}.nav-icon-box{width:30px;height:30px;flex-basis:30px}}
+@media(max-width:700px){
+ .header-inner{height:68px;padding:0 9px;gap:7px}.logo{min-width:0;flex-shrink:1}.logo-img-wrap{width:42px;height:42px;flex:0 0 42px}.logo h1{font-size:11px;white-space:nowrap}.logo span{font-size:6.5px}
+ .nav{margin-left:auto;gap:3px;padding:3px;border-radius:15px;flex-shrink:0}.nav button,.profile-nav-button{width:42px;min-width:42px;height:42px;padding:0;border-radius:12px}.nav button span:last-child,.profile-nav-button span:last-child{display:none}.nav-icon-box{width:30px;height:30px;flex-basis:30px;border-radius:9px}.nav-icon-box svg{width:18px;height:18px}.gmail-nav-icon img{width:19px!important;height:19px!important}.nav button.active::after{bottom:-5px;width:20px}
+}
+@media(max-width:500px){.header-inner{height:62px;padding:0 7px}.logo-img-wrap{width:38px;height:38px;flex-basis:38px}.logo h1{font-size:9px}.logo span{display:none}.nav{gap:2px;padding:3px}.nav button,.profile-nav-button{width:38px;min-width:38px;height:38px}.nav-icon-box{width:27px;height:27px;flex-basis:27px;border-radius:8px}.nav-icon-box svg{width:16px;height:16px}.gmail-nav-icon img{width:17px!important;height:17px!important}}
 </style>
 </head>
 
@@ -2801,6 +3047,11 @@ stroke-linejoin="round">
 
 <span>Free Fire</span>
 
+</button>
+
+<button id="gmailNav" class="profile-nav-button auth-nav-button" onclick="showPage('gmail')">
+<span class="nav-icon-box gmail-nav-icon"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail"></span>
+<span>Gmail</span>
 </button>
 
 <button id="loginNav" class="profile-nav-button auth-nav-button" onclick="openLogin()">
@@ -3302,6 +3553,69 @@ style="margin-top:25px">
 </div>
 
 </section>
+
+
+<!-- GMAIL SHOP PAGE -->
+<section id="gmail" class="page">
+  <div class="gmail-page">
+    <button class="back-button" onclick="showPage('home')">ກັບໜ້າຫຼັກ</button>
+
+    <div class="section-title">
+      <h2>
+        <span class="icon"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail" style="width:25px;height:25px"></span>
+        Gmail
+      </h2>
+      <p>ເລືອກແພັກເກັດເມວທີ່ຕ້ອງການ ແລ້ວສັ່ງຊື້</p>
+    </div>
+
+    <div class="gmail-hero">
+      <div class="gmail-hero-head">
+        <div class="gmail-logo">
+          <img src="https://cdn.simpleicons.org/gmail" alt="Gmail">
+        </div>
+        <div>
+          <h2>Gmail Account</h2>
+          <p>ເລືອກຈຳນວນບັນຊີ ແລ້ວກົດສັ່ງຊື້</p>
+        </div>
+      </div>
+
+      <div class="gmail-warning">
+        <div class="gmail-warning-title">⚠️ ຄຳເຕືອນສຳຄັນ</div>
+        <div class="gmail-warning-list">
+          <div>• ເມວແອັດມິນສ້າງເອງໃຊ້ IOS ສະອາດ100%</div>
+          <div>• ຮັບປະກັນຫລັງຂາຍ 3-5 ວັນຖ້າມີປັນຫາປ່ຽນເມວໃຫ້</div>
+          <div>• ເມວໄໜ່ແບບນີ້ໄວ້ຍ້າຍເກມຫລືອື້ນນນທີຢາກໃຊ້</div>
+        </div>
+      </div>
+
+      <div class="gmail-packages" id="gmailPackages"></div>
+
+      <div class="gmail-order-bar">
+        <div class="gmail-order-info">
+          <strong id="gmailSelectedText">ຍັງບໍ່ໄດ້ເລືອກແພັກເກັດ</strong>
+          <span id="gmailSelectedPrice">ເລືອກແພັກເກັດກ່ອນສັ່ງຊື້</span>
+        </div>
+        <button id="gmailOrderButton" class="gmail-order-btn" disabled onclick="openGmailPayment()">
+          🛒 ສັ່ງຊື້ Gmail
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GMAIL PAYMENT MODAL -->
+<div id="gmailPaymentModal" class="modal" onclick="closeGmailPaymentOutside(event)">
+  <div class="modal-box">
+    <div class="modal-header">
+      <h3>
+        <span class="icon"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail" style="width:21px;height:21px"></span>
+        ຊຳລະຄ່າ Gmail
+      </h3>
+      <button class="close-modal" onclick="closeGmailPayment()">×</button>
+    </div>
+    <div class="modal-body" id="gmailPaymentContent"></div>
+  </div>
+</div>
 
 <!-- CONTACT MODAL -->
 
@@ -3941,7 +4255,7 @@ const products=[
 
 {
  id:32,
- name:"𝐄𝐏 #𝟎𝟎32",
+ name:"EP #0032",
  price:1550000,
  stock:true,
  stockQty:1,
@@ -3960,7 +4274,7 @@ const products=[
 
 {
  id:31,
- name:"𝐄𝐏 #𝟎𝟎31",
+ name:"EP #0031",
  price:650000,
  stock:true,
  stockQty:1,
@@ -3980,7 +4294,7 @@ const products=[
 
 {
  id:30,
- name:"𝐄𝐏 #𝟎𝟎30",
+ name:"EP #0030",
  price:510000,
  stock:true,
  stockQty:1,
@@ -4000,7 +4314,7 @@ const products=[
 
 {
  id:29,
- name:"𝐄𝐏 #𝟎𝟎29",
+ name:"EP #0029",
  price:350000,
  stock:false,
  stockQty:0,
@@ -4019,7 +4333,7 @@ const products=[
 
 {
  id:26,
- name:"𝐄𝐏 #𝟎𝟎𝟐𝟔",
+ name:"EP #0026",
  price:380000,
  stock:false,
  stockQty:0,
@@ -4038,7 +4352,7 @@ const products=[
 
 {
  id:28,
- name:"𝐄𝐏 #𝟎𝟎𝟐𝟖",
+ name:"EP #0028",
  price:450000,
  stock:false,
  stockQty:0,
@@ -4047,7 +4361,7 @@ const products=[
 
 {
  id:27,
- name:"𝐄𝐏 #𝟎𝟎𝟐𝟕",
+ name:"EP #0027",
  price:600000,
  stock:false,
  stockQty:0,
@@ -4056,7 +4370,7 @@ const products=[
 
 {
  id:25,
- name:"𝐄𝐏 #𝟎𝟎𝟐𝟓",
+ name:"EP #0025",
  price:620000,
  stock:false,
  stockQty:0,
@@ -5978,6 +6292,210 @@ function logoutAccount(){
 }
 
 updateLoginStatus();
+
+
+/* =========================
+   GMAIL SHOP — NO GOOGLE SHEET
+========================= */
+const GMAIL_PACKAGES = [
+  {qty:1, price:10000},
+  {qty:2, price:20000},
+  {qty:3, price:30000},
+  {qty:4, price:40000},
+  {qty:5, price:50000},
+  {qty:6, price:60000},
+  {qty:7, price:70000},
+  {qty:8, price:80000},
+  {qty:9, price:90000},
+  {qty:15, price:240000}
+];
+
+let selectedGmailPackage = null;
+let selectedGmailPayment = "IBCOOL";
+
+function renderGmailPackages(){
+  const box=document.getElementById("gmailPackages");
+  if(!box)return;
+  box.innerHTML=GMAIL_PACKAGES.map((item,index)=>`
+    <button type="button"
+      class="gmail-package ${selectedGmailPackage && selectedGmailPackage.qty===item.qty ? "selected":""}"
+      onclick="selectGmailPackage(${index})">
+      <div class="gmail-p-icon">
+        <img src="https://cdn.simpleicons.org/gmail" alt="Gmail">
+      </div>
+      <strong>${item.qty} ເມວ</strong>
+      <div class="gmail-price">${formatPrice(item.price)}</div>
+      <small>Gmail Account</small>
+      <div class="gmail-selected">✓</div>
+    </button>
+  `).join("");
+}
+
+function selectGmailPackage(index){
+  selectedGmailPackage=GMAIL_PACKAGES[index] || null;
+  renderGmailPackages();
+
+  const text=document.getElementById("gmailSelectedText");
+  const price=document.getElementById("gmailSelectedPrice");
+  const button=document.getElementById("gmailOrderButton");
+
+  if(selectedGmailPackage){
+    text.textContent=`ເລືອກ ${selectedGmailPackage.qty} ເມວ Gmail`;
+    price.textContent=`ລວມ ${formatPrice(selectedGmailPackage.price)}`;
+    button.disabled=false;
+  }
+}
+
+function openGmailPayment(){
+  if(!selectedGmailPackage){
+    alert("ກະລຸນາເລືອກແພັກເກັດ Gmail ກ່ອນ.");
+    return;
+  }
+  selectedGmailPayment="IBCOOL";
+  renderGmailPayment();
+  document.getElementById("gmailPaymentModal").classList.add("show");
+}
+
+function selectGmailPayment(type){
+  selectedGmailPayment=type;
+  renderGmailPayment();
+}
+
+function renderGmailPayment(){
+  const item=selectedGmailPackage;
+  if(!item)return;
+
+  const bankName =
+    selectedGmailPayment==="BCELONE" ? "BCEL ONE" :
+    selectedGmailPayment==="UMONEY" ? "U-MONEY" : "IB COOL";
+
+  const bankFullName =
+    selectedGmailPayment==="BCELONE" ? "ທະນາຄານ BCEL" :
+    selectedGmailPayment==="UMONEY" ? "U-MONEY" : "Indochina Bank";
+
+  const qr =
+    selectedGmailPayment==="BCELONE" ? PAYMENT_QR.BCELONE :
+    selectedGmailPayment==="UMONEY" ? PAYMENT_QR.UMONEY : PAYMENT_QR.IBCOOL;
+
+  const content=document.getElementById("gmailPaymentContent");
+  if(!content)return;
+
+  content.innerHTML=`
+    <div class="gmail-payment-box">
+      <div class="gmail-payment-head">
+        <img src="https://cdn.simpleicons.org/gmail" alt="Gmail">
+        <div class="gmail-payment-title">ສັ່ງຊື້ Gmail</div>
+      </div>
+
+      <div class="gmail-payment-package">
+        ແພັກເກັດ ${item.qty} ເມວ
+      </div>
+
+      <div class="gmail-payment-total">
+        ${formatPrice(item.price)}
+      </div>
+
+      <div class="payment-method-title">ເລືອກບັນຊີຊຳລະເງິນ</div>
+
+      <div class="gmail-payment-methods">
+        <button type="button"
+          class="gmail-pay-method ${selectedGmailPayment==="IBCOOL"?"active":""}"
+          onclick="selectGmailPayment('IBCOOL')">
+          <img src="${PAYMENT_ICON.IBCOOL}" alt="IB COOL">
+          <div><strong>IB COOL</strong><span>Indochina Bank</span></div>
+        </button>
+
+        <button type="button"
+          class="gmail-pay-method ${selectedGmailPayment==="BCELONE"?"active":""}"
+          onclick="selectGmailPayment('BCELONE')">
+          <img src="${PAYMENT_ICON.BCELONE}" alt="BCEL ONE">
+          <div><strong>BCEL ONE</strong><span>ທະນາຄານ BCEL</span></div>
+        </button>
+
+        <button type="button"
+          class="gmail-pay-method ${selectedGmailPayment==="UMONEY"?"active":""}"
+          onclick="selectGmailPayment('UMONEY')">
+          <img src="${PAYMENT_ICON.UMONEY}" alt="U-MONEY">
+          <div><strong>U-MONEY</strong><span>U-Money</span></div>
+        </button>
+      </div>
+
+      <div class="gmail-payment-bank">
+        ບັນຊີທີ່ເລືອກ: <b>${bankName}</b>
+        <br>${bankFullName}
+      </div>
+
+      <div class="gmail-qr-label">ສະແກນ QR ຂອງ ${bankName}</div>
+
+      <div class="gmail-qr">
+        <img src="${qr}" alt="QR ${bankName}">
+      </div>
+
+      <div class="gmail-transfer-note">
+        ກະລຸນາໂອນເງິນ <b>${formatPrice(item.price)}</b> ໃຫ້ຄົບກ່ອນ.
+        <br>
+        ຫຼັງຈາກໂອນແລ້ວ ກົດປຸ່ມດ້ານລຸ່ມເພື່ອຮັບເມວ
+        <br>
+        ແອັດມິນຈະກວດສອບການໂອນ ແລ້ວສົ່ງຂໍ້ມູນ Gmail ໃຫ້.
+      </div>
+
+      <button class="gmail-wa-btn" type="button" onclick="sendGmailWhatsApp()">
+        ໂອນແລ້ວ — ທັກຫາແອັດມິນເພື່ອຮັບເມວ
+      </button>
+    </div>
+  `;
+}
+
+function sendGmailWhatsApp(){
+  if(!selectedGmailPackage)return;
+
+  const bankName =
+    selectedGmailPayment==="BCELONE" ? "BCEL ONE" :
+    selectedGmailPayment==="UMONEY" ? "U-MONEY" : "IB COOL";
+
+  const message =
+`ສະບາຍດີ LAO GAMING PRO X3D
+
+ຂ້ອຍຕ້ອງການສັ່ງຊື້ Gmail
+
+📧 ແພັກເກັດ: ${selectedGmailPackage.qty} ເມວ
+💰 ລາຄາ: ${formatPrice(selectedGmailPackage.price)}
+💳 ບັນຊີທີ່ໂອນ: ${bankName}
+
+✅ ຂ້ອຍໂອນເງິນແລ້ວ
+📎 ກະລຸນາກວດສອບສະລິບ ແລະ ສົ່ງ Gmail ໃຫ້ຂ້ອຍ.
+
+ໝາຍເຫດ: ຈະແນບສະລິບການໂອນໃນ WhatsApp.`;
+
+  const url="https://wa.me/"+WHATSAPP+"?text="+encodeURIComponent(message);
+  window.open(url,"_blank");
+}
+
+function closeGmailPayment(){
+  const modal=document.getElementById("gmailPaymentModal");
+  if(modal)modal.classList.remove("show");
+}
+
+function closeGmailPaymentOutside(event){
+  if(event.target.id==="gmailPaymentModal")closeGmailPayment();
+}
+
+function renderGmailPageOnStart(){
+  renderGmailPackages();
+}
+
+/* Extend existing page navigation without replacing the original system. */
+const __originalShowPage = showPage;
+showPage = function(page){
+  __originalShowPage(page);
+  if(page==="gmail"){
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    const gmailNav=document.getElementById("gmailNav");
+    if(gmailNav)gmailNav.classList.add("active");
+  }
+};
+
+renderGmailPageOnStart();
 
 </script>
 
