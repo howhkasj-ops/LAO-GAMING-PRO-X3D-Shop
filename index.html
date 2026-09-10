@@ -3090,16 +3090,6 @@ alt="LAO GAMING PRO X3D">
 
 </div>
 
-<div class="header-search" id="headerSearchWrap" onclick="document.getElementById('headerSearch')?.focus()">
- <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-  <circle cx="11" cy="11" r="7"></circle>
-  <path d="m20 20-4-4"></path>
- </svg>
- <input id="headerSearch" type="search" placeholder="ຄົ້ນຫາສິນຄ້າ..." autocomplete="off"
-  oninput="const x=document.getElementById('search'); if(x){x.value=this.value;} searchProducts();"
-  onkeydown="handleSearchKey(event)">
-</div>
-
 <nav class="nav">
 
 <button
@@ -3211,54 +3201,104 @@ stroke-linejoin="round">
 
 <!-- Three-dot menu -->
 <div class="shop-menu-wrap" id="shopMenuWrap">
-  <button class="shop-menu-button" type="button" onclick="toggleShopMenu(event)" aria-label="ເມນູ" title="ເມນູ">
+  <button class="shop-menu-button" type="button"
+          onclick="toggleShopMenu(event)"
+          aria-label="ເມນູ"
+          title="ເມນູ">
     <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/>
+      <circle cx="5" cy="12" r="2.2"/>
+      <circle cx="12" cy="12" r="2.2"/>
+      <circle cx="19" cy="12" r="2.2"/>
     </svg>
   </button>
+
   <div class="shop-menu-panel" id="shopMenuPanel">
     <div class="shop-menu-title">LAO GAMING PRO X3D</div>
 
     <button class="shop-menu-item" type="button" onclick="shopMenuGo('home')">
-      <span class="shop-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5.5 9.5V21h13V9.5"/><path d="M9.5 21v-6h5v6"/></svg></span>
+      <span class="shop-menu-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 10.5L12 3l9 7.5"/>
+          <path d="M5.5 9.5V21h13V9.5"/>
+          <path d="M9.5 21v-6h5v6"/>
+        </svg>
+      </span>
       <span>ໜ້າຫຼັກ</span>
     </button>
 
     <button class="shop-menu-item" type="button" onclick="shopMenuGo('shop')">
-      <span class="shop-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M7 8h10a5 5 0 0 1 4.8 6.4l-1 3.3a2 2 0 0 1-3.6.6l-1.6-2.3H8.4l-1.6 2.3a2 2 0 0 1-3.6-.6l-1-3.3A5 5 0 0 1 7 8Z"/><path d="M7 11v4M5 13h4"/><path d="M16.5 12.5h.01M19 14h.01"/></svg></span>
-      <span>Free Fire</span>
-    </button>
-
-    <button class="shop-menu-item" type="button" onclick="shopMenuGo('gmail')">
-      <span class="shop-menu-icon gmail"><img src="https://cdn.simpleicons.org/gmail" alt="Gmail" style="width:19px;height:19px;object-fit:contain"></span>
-      <span>Gmail</span>
+      <span class="shop-menu-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M7 8h10a5 5 0 0 1 4.8 6.4l-1 3.3a2 2 0 0 1-3.6.6l-1.6-2.3H8.4l-1.6 2.3a2 2 0 0 1-3.6-.6l-1-3.3A5 5 0 0 1 7 8Z"/>
+          <path d="M7 11v4M5 13h4"/>
+          <path d="M16.5 12.5h.01M19 14h.01"/>
+        </svg>
+      </span>
+      <span>ລາຍການສິນຄ້າ</span>
     </button>
 
     <button class="shop-menu-item" type="button" onclick="shopMenuContact()">
-      <span class="shop-menu-icon contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.8 8.8 0 0 1-4.1-1L3 20l1.1-4.5A8.2 8.2 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/><path d="M8 12h.01M12 12h.01M16 12h.01"/></svg></span>
-      <span>ຂໍ້ມູນຕິດຕໍ່</span>
+      <span class="shop-menu-icon contact">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 11.5a8.4 8.4 0 0 1-9 8.5 8.8 8.8 0 0 1-4.1-1L3 20l1.1-4.5A8.2 8.2 0 0 1 3 11.5 8.5 8.5 0 0 1 12 3a8.5 8.5 0 0 1 9 8.5Z"/>
+          <path d="M8 12h.01M12 12h.01M16 12h.01"/>
+        </svg>
+      </span>
+      <span>ຕິດຕໍ່ພວກເຮົາ</span>
     </button>
 
-    <div class="shop-menu-divider"></div>
-
-    <button class="shop-menu-item" id="menuRegisterItem" type="button" onclick="shopMenuRegister()">
-      <span class="shop-menu-icon register"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="4"/><path d="M2 21c.8-4 3.5-6 7-6s6.2 2 7 6"/><path d="M19 8v6M16 11h6"/></svg></span>
+    <button id="menuRegisterItem" class="shop-menu-item register-menu" type="button"
+            onclick="shopMenuRegister()">
+      <span class="shop-menu-icon register">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="9" cy="8" r="4"/>
+          <path d="M2 21c.8-4 3.5-6 7-6s6.2 2 7 6"/>
+          <path d="M19 8v6M16 11h6"/>
+        </svg>
+      </span>
       <span>ສະໝັກສະມາຊິກ</span>
     </button>
 
-    <button class="shop-menu-item" id="menuLoginItem" type="button" onclick="shopMenuLogin()">
-      <span class="shop-menu-icon login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/></svg></span>
-      <span id="menuLoginText">Login</span>
-    </button>
-
-    <button class="shop-menu-item" id="menuProfileItem" type="button" onclick="shopMenuProfile()" style="display:none">
-      <span class="shop-menu-icon login"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/></svg></span>
+    <button id="menuProfileItem" class="shop-menu-item profile-menu" type="button"
+            onclick="shopMenuProfile()" style="display:none">
+      <span class="shop-menu-icon profile">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/>
+        </svg>
+      </span>
       <span id="menuProfileText">ໂປຣໄຟລ໌</span>
     </button>
 
-    <button class="shop-menu-item" type="button" onclick="shopMenuTheme()">
-      <span class="shop-menu-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42"/></svg></span>
-      <span>ປ່ຽນສີເວັບ</span>
+    <button id="menuLogoutItem" class="shop-menu-item logout-menu" type="button"
+            onclick="shopMenuLogout()" style="display:none">
+      <span class="shop-menu-icon logout">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 17l5-5-5-5"/>
+          <path d="M15 12H3"/>
+          <path d="M21 19V5a2 2 0 0 0-2-2h-5"/>
+        </svg>
+      </span>
+      <span>ອອກຈາກລະບົບ</span>
+    </button>
+
+    <button id="menuLoginItem" class="shop-menu-item login-menu" type="button"
+            onclick="shopMenuLogin()">
+      <span class="shop-menu-icon login">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 17l5-5-5-5"/>
+          <path d="M15 12H3"/>
+          <path d="M21 19V5a2 2 0 0 0-2-2h-5"/>
+        </svg>
+      </span>
+      <span id="menuLoginText">ເຂົ້າສູ່ລະບົບ</span>
     </button>
   </div>
 </div>
@@ -6298,7 +6338,7 @@ async function registerAccount(){
   }
 }
 
-async function loginAccount(){
+async async function loginAccount(){
 
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
@@ -6322,13 +6362,14 @@ async function loginAccount(){
         JSON.stringify(result.user)
       );
 
-      showAuthNotice("Login ສຳເລັດ — OK","success");
+      showAuthNotice("ເຂົ້າສູ່ລະບົບສຳເລັດ ✓ OK","success");
 
       closeLogin();
 
       showPage("shop");
 
       updateLoginStatus();
+      updateShopMenuAuth();
 
       // ຫຼັງຈາກ Login ສຳເລັດ ໃຫ້ກັບໄປຫາສິນຄ້າທີ່ກົດສັ່ງຊື້
       const pendingProductId = sessionStorage.getItem("laogaming_pending_product");
@@ -6357,7 +6398,6 @@ async function loginAccount(){
     }else{
 
       showAuthNotice(
-        result.message ||
         "Email ຫຼື Password ບໍ່ຖືກຕ້ອງ",
         "error"
       );
@@ -6433,7 +6473,8 @@ function logoutAccount(){
   closeProfile();
   localStorage.removeItem("laogaming_user");
   updateLoginStatus();
-  alert("ອອກຈາກບັນຊີແລ້ວ");
+  updateShopMenuAuth();
+  showAuthNotice("ອອກຈາກລະບົບສຳເລັດ ✓","success");
   showPage("home");
 }
 
@@ -6688,17 +6729,23 @@ function shopMenuContact(){ closeShopMenu(); openContact(); }
 function shopMenuRegister(){ closeShopMenu(); openLogin(); setTimeout(function(){ if(typeof showRegister==='function') showRegister(); },30); }
 function shopMenuLogin(){ closeShopMenu(); openLogin(); }
 function shopMenuProfile(){ closeShopMenu(); if(typeof openProfile==='function') openProfile(); }
+function shopMenuLogout(){
+  closeShopMenu();
+  if(typeof logoutAccount==='function') logoutAccount();
+}
 function shopMenuTheme(){ closeShopMenu(); if(typeof toggleTheme==='function') toggleTheme(); }
 function updateShopMenuAuth(){
   const logged=typeof isLoggedIn==='function' && isLoggedIn();
   const reg=document.getElementById('menuRegisterItem');
   const login=document.getElementById('menuLoginItem');
   const profile=document.getElementById('menuProfileItem');
+  const logout=document.getElementById('menuLogoutItem');
   const text=document.getElementById('menuLoginText');
   const ptext=document.getElementById('menuProfileText');
   if(reg) reg.style.display=logged?'none':'flex';
   if(login) login.style.display=logged?'none':'flex';
   if(profile) profile.style.display=logged?'flex':'none';
+  if(logout) logout.style.display=logged?'flex':'none';
   if(logged && ptext){
     try{
       const u=JSON.parse(localStorage.getItem('laogaming_user')||'null');
@@ -7387,6 +7434,290 @@ body.dark-mode .nav #loginNav .nav-icon-box{color:#e5edf7!important;}
  .nav #themeToggle{width:32px!important;min-width:32px!important;}
  .nav #loginNav{min-width:82px!important;padding-left:8px!important;padding-right:8px!important;}
 }
+
+<style id="final-user-layout-fix">
+/* ===== USER REQUEST: clean 3-dot navigation ===== */
+.header-search{
+  display:none!important;
+}
+
+/* Hide the old direct navigation; the 3-dot menu is the visible navigation. */
+.header .nav{
+  display:none!important;
+}
+
+.header-inner{
+  justify-content:space-between!important;
+}
+
+.shop-menu-wrap{
+  display:block!important;
+  position:relative!important;
+  margin-left:auto!important;
+  z-index:1200!important;
+}
+
+.shop-menu-button{
+  width:44px!important;
+  height:44px!important;
+  border:1px solid #d8eaff!important;
+  border-radius:13px!important;
+  background:rgba(255,255,255,.94)!important;
+  color:#087cff!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  cursor:pointer!important;
+  box-shadow:0 7px 20px rgba(0,126,255,.10)!important;
+  transition:.2s ease!important;
+}
+
+.shop-menu-button:hover{
+  transform:translateY(-2px)!important;
+  background:#eef8ff!important;
+  box-shadow:0 10px 25px rgba(0,126,255,.16)!important;
+}
+
+.shop-menu-button svg{
+  width:22px!important;
+  height:22px!important;
+}
+
+.shop-menu-panel{
+  width:250px!important;
+  max-width:calc(100vw - 20px)!important;
+  padding:9px!important;
+  position:absolute!important;
+  top:51px!important;
+  right:0!important;
+  background:rgba(255,255,255,.98)!important;
+  border:1px solid #d8eaff!important;
+  border-radius:18px!important;
+  box-shadow:0 20px 55px rgba(0,80,160,.18)!important;
+  backdrop-filter:blur(18px)!important;
+  -webkit-backdrop-filter:blur(18px)!important;
+  opacity:0!important;
+  visibility:hidden!important;
+  pointer-events:none!important;
+  transform:translateY(-8px) scale(.98)!important;
+  transform-origin:top right!important;
+  transition:.18s ease!important;
+}
+
+.shop-menu-panel.show{
+  opacity:1!important;
+  visibility:visible!important;
+  pointer-events:auto!important;
+  transform:translateY(0) scale(1)!important;
+}
+
+.shop-menu-title{
+  padding:10px 12px 8px!important;
+  font-size:11px!important;
+  font-weight:950!important;
+  color:#718399!important;
+  letter-spacing:.5px!important;
+}
+
+.shop-menu-item{
+  width:100%!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:11px!important;
+  padding:11px 10px!important;
+  margin:2px 0!important;
+  border:0!important;
+  border-radius:13px!important;
+  background:transparent!important;
+  color:#142238!important;
+  font:inherit!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  text-align:left!important;
+  cursor:pointer!important;
+  transition:.16s ease!important;
+}
+
+.shop-menu-item:hover{
+  background:#eef8ff!important;
+  color:#087cff!important;
+  transform:translateX(2px)!important;
+}
+
+.shop-menu-icon{
+  width:38px!important;
+  height:38px!important;
+  flex:0 0 38px!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  border-radius:11px!important;
+  background:#eaf6ff!important;
+  color:#087cff!important;
+}
+
+.shop-menu-icon svg{
+  width:20px!important;
+  height:20px!important;
+}
+
+.shop-menu-icon.contact{
+  background:#fff7ed!important;
+  color:#ea580c!important;
+}
+
+.shop-menu-icon.register{
+  background:#effdf5!important;
+  color:#16a34a!important;
+}
+
+.shop-menu-icon.login{
+  background:#eef2ff!important;
+  color:#4f46e5!important;
+}
+
+.video-help{
+  display:none!important;
+}
+
+/* Keep product search only inside the product-list page. */
+#shop .search-box{
+  display:flex!important;
+}
+
+/* Separate available and sold products clearly. */
+.product-row-title{
+  display:flex!important;
+  align-items:center!important;
+  gap:8px!important;
+  padding:10px 2px!important;
+  font-size:15px!important;
+  font-weight:950!important;
+}
+
+.available-row-title{
+  color:#087cff!important;
+}
+
+.available-row-title::before{
+  content:"✓";
+  width:24px;
+  height:24px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#eafaf0;
+  color:#16a34a;
+  font-size:13px;
+}
+
+.sold-row-title{
+  color:#ef4444!important;
+  margin-top:34px!important;
+}
+
+.sold-row-title::before{
+  content:"✓";
+  width:24px;
+  height:24px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:#fff1f1;
+  color:#ef4444;
+  font-size:13px;
+}
+
+/* Product cards */
+.product{
+  border-radius:20px!important;
+  overflow:hidden!important;
+  box-shadow:0 10px 30px rgba(0,126,255,.09)!important;
+  transition:transform .22s ease,box-shadow .22s ease!important;
+}
+
+.product:hover{
+  transform:translateY(-5px)!important;
+  box-shadow:0 18px 42px rgba(0,126,255,.15)!important;
+}
+
+.product-content{
+  padding:16px!important;
+}
+
+.product-title{
+  font-size:15px!important;
+  line-height:1.55!important;
+}
+
+.product-price{
+  font-size:18px!important;
+  font-weight:950!important;
+}
+
+.sold-products-row .product{
+  opacity:.96;
+}
+
+/* Mobile */
+@media(max-width:700px){
+  .header-inner{
+    min-height:64px!important;
+    padding:8px 10px!important;
+  }
+
+  .shop-menu-button{
+    width:40px!important;
+    height:40px!important;
+    border-radius:12px!important;
+  }
+
+  .shop-menu-panel{
+    top:47px!important;
+    width:235px!important;
+  }
+
+  .shop-menu-item{
+    padding:10px 8px!important;
+    font-size:12px!important;
+  }
+
+  .shop-menu-icon{
+    width:35px!important;
+    height:35px!important;
+    flex-basis:35px!important;
+  }
+}
+
+/* Dark mode menu */
+body.dark-mode .shop-menu-button{
+  background:#111827!important;
+  border-color:#2b3a4f!important;
+  color:#67e8f9!important;
+}
+
+body.dark-mode .shop-menu-panel{
+  background:#111827!important;
+  border-color:#2b3a4f!important;
+  box-shadow:0 20px 55px rgba(0,0,0,.40)!important;
+}
+
+body.dark-mode .shop-menu-item{
+  color:#e5edf7!important;
+}
+
+body.dark-mode .shop-menu-item:hover{
+  background:#172235!important;
+  color:#67e8f9!important;
+}
+
+body.dark-mode .shop-menu-title{
+  color:#94a3b8!important;
+}
+</style>
+
 </style>
 </body>
 </html>
