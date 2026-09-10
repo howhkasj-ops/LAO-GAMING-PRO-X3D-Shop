@@ -3275,19 +3275,6 @@ stroke-linejoin="round">
       <span id="menuProfileText">ໂປຣໄຟລ໌</span>
     </button>
 
-    <button id="menuLogoutItem" class="shop-menu-item logout-menu" type="button"
-            onclick="shopMenuLogout()" style="display:none">
-      <span class="shop-menu-icon logout">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M10 17l5-5-5-5"/>
-          <path d="M15 12H3"/>
-          <path d="M21 19V5a2 2 0 0 0-2-2h-5"/>
-        </svg>
-      </span>
-      <span>ອອກຈາກລະບົບ</span>
-    </button>
-
     <button id="menuLoginItem" class="shop-menu-item login-menu" type="button"
             onclick="shopMenuLogin()">
       <span class="shop-menu-icon login">
@@ -6729,23 +6716,16 @@ function shopMenuContact(){ closeShopMenu(); openContact(); }
 function shopMenuRegister(){ closeShopMenu(); openLogin(); setTimeout(function(){ if(typeof showRegister==='function') showRegister(); },30); }
 function shopMenuLogin(){ closeShopMenu(); openLogin(); }
 function shopMenuProfile(){ closeShopMenu(); if(typeof openProfile==='function') openProfile(); }
-function shopMenuLogout(){
-  closeShopMenu();
-  if(typeof logoutAccount==='function') logoutAccount();
-}
 function shopMenuTheme(){ closeShopMenu(); if(typeof toggleTheme==='function') toggleTheme(); }
 function updateShopMenuAuth(){
   const logged=typeof isLoggedIn==='function' && isLoggedIn();
   const reg=document.getElementById('menuRegisterItem');
   const login=document.getElementById('menuLoginItem');
   const profile=document.getElementById('menuProfileItem');
-  const logout=document.getElementById('menuLogoutItem');
-  const text=document.getElementById('menuLoginText');
   const ptext=document.getElementById('menuProfileText');
   if(reg) reg.style.display=logged?'none':'flex';
   if(login) login.style.display=logged?'none':'flex';
   if(profile) profile.style.display=logged?'flex':'none';
-  if(logout) logout.style.display=logged?'flex':'none';
   if(logged && ptext){
     try{
       const u=JSON.parse(localStorage.getItem('laogaming_user')||'null');
