@@ -2979,6 +2979,88 @@ body.dark-mode .theme-toggle{background:#1b202b;color:#fff;border-color:#394153}
 .nav{display:none!important}
 
 </style>
+
+<style>
+/* ===== PRODUCT ROWS: available first, sold in separate row ===== */
+.product-row-title{
+  margin:26px 0 12px!important;
+  padding:0 2px!important;
+  font-size:14px!important;
+  font-weight:800!important;
+  letter-spacing:.1px!important;
+}
+.product-row-title.available-row-title{color:#087cff!important;}
+.product-row-title.sold-row-title{color:#7d8a9a!important; margin-top:34px!important;}
+.sold-products-row{margin-bottom:8px!important;}
+body.dark-mode .product-row-title.available-row-title{color:#5db8ff!important;}
+body.dark-mode .product-row-title.sold-row-title{color:#aebdce!important;}
+/* ===== FINAL V8: polished header ===== */
+.header{
+  box-shadow:0 8px 24px rgba(20,70,110,.07)!important;
+}
+.header-inner{
+  min-height:58px!important;
+  gap:10px!important;
+}
+.header-search{
+  flex-basis:205px!important;
+  width:205px!important;
+  max-width:205px!important;
+  height:34px!important;
+  margin-right:3px!important;
+  padding:0 11px!important;
+  gap:7px!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  box-shadow:0 2px 8px rgba(30,90,140,.05)!important;
+}
+.header-search>svg{width:16px!important;height:16px!important;}
+.header-search input{font-size:12px!important;font-weight:500!important;}
+.nav{gap:1px!important;}
+.nav button{
+  height:34px!important;
+  padding:0 8px!important;
+  gap:5px!important;
+  border-radius:9px!important;
+  font-size:11px!important;
+  font-weight:700!important;
+  letter-spacing:.05px!important;
+}
+.nav .nav-icon-box{
+  width:18px!important;
+  height:18px!important;
+  flex-basis:18px!important;
+}
+.nav .nav-icon-box svg{width:16px!important;height:16px!important;}
+/* Product + About: slightly larger, but still elegant */
+.nav #shopNav .nav-icon-box,
+.nav .nav-contact .nav-icon-box{
+  width:20px!important;height:20px!important;flex-basis:20px!important;
+}
+.nav #shopNav .nav-icon-box svg,
+.nav .nav-contact .nav-icon-box svg{
+  width:17px!important;height:17px!important;
+}
+.nav #themeToggle{width:36px!important;min-width:36px!important;}
+.nav #themeToggle svg{width:17px!important;height:17px!important;}
+.nav #loginNav{
+  min-width:98px!important;
+  height:35px!important;
+  margin-left:4px!important;
+  padding:0 12px!important;
+  border-radius:9px!important;
+  box-shadow:0 2px 7px rgba(40,90,130,.05)!important;
+}
+.nav #loginNav .nav-icon-box svg{width:15px!important;height:15px!important;}
+body.dark-mode .header{box-shadow:0 8px 26px rgba(0,0,0,.22)!important;}
+body.dark-mode .header-search{background:#111a28!important;box-shadow:none!important;}
+body.dark-mode .nav #loginNav{box-shadow:none!important;}
+@media(max-width:1050px){
+ .header-search{flex-basis:185px!important;width:185px!important;max-width:185px!important;}
+ .nav button{padding-left:6px!important;padding-right:6px!important;}
+ .nav #loginNav{min-width:86px!important;}
+}
+</style>
 </head>
 
 <body>
@@ -3546,7 +3628,10 @@ stroke-width="2">
 
 </div>
 
+<div class="product-row-title available-row-title">ສິນຄ້າທີ່ຍັງມີ</div>
 <div id="homeProducts" class="products"></div>
+<div class="product-row-title sold-row-title">ສິນຄ້າທີ່ຂາຍແລ້ວ</div>
+<div id="homeSoldProducts" class="products sold-products-row"></div>
 
 </div>
 
@@ -3656,11 +3741,14 @@ onclick="clearSearch()">
 
 </div>
 
+<div class="product-row-title available-row-title">ສິນຄ້າທີ່ຍັງມີ</div>
 <div
 id="shopProducts"
 class="products"
 style="margin-top:25px">
 </div>
+<div class="product-row-title sold-row-title">ສິນຄ້າທີ່ຂາຍແລ້ວ</div>
+<div id="shopSoldProducts" class="products sold-products-row"></div>
 
 </div>
 
@@ -4916,17 +5004,22 @@ function getVisibleProducts(){
 
 function renderProducts(){
  const home=document.getElementById("homeProducts");
+ const homeSold=document.getElementById("homeSoldProducts");
  const shop=document.getElementById("shopProducts");
- if(!home || !shop)return;
+ const shopSold=document.getElementById("shopSoldProducts");
+ if(!home || !homeSold || !shop || !shopSold)return;
 
  home.innerHTML="";
+ homeSold.innerHTML="";
  shop.innerHTML="";
+ shopSold.innerHTML="";
 
  getVisibleProducts().forEach(product=>{
+  const sold=!isProductAvailable(product);
   const homeCard=createCard(product);
   const shopCard=createCard(product);
-  if(homeCard)home.appendChild(homeCard);
-  if(shopCard)shop.appendChild(shopCard);
+  if(homeCard)(sold ? homeSold : home).appendChild(homeCard);
+  if(shopCard)(sold ? shopSold : shop).appendChild(shopCard);
  });
 
  updateStockSummary();
@@ -4998,7 +5091,8 @@ function searchProducts(){
  const input=document.getElementById("search");
  const headerInput=document.getElementById("headerSearch");
  const shop=document.getElementById("shopProducts");
- if(!shop)return;
+ const shopSold=document.getElementById("shopSoldProducts");
+ if(!shop || !shopSold)return;
 
  if(!input && !headerInput)return;
  const source=headerInput || input;
@@ -5006,17 +5100,10 @@ function searchProducts(){
  if(input && headerInput && input.value!==headerInput.value) input.value=headerInput.value;
 
  shop.innerHTML="";
+ shopSold.innerHTML="";
 
  const visible=getVisibleProducts();
- if(keyword===""){
-  visible.forEach(product=>{
-   const card=createCard(product);
-   if(card)shop.appendChild(card);
-  });
-  return;
- }
-
- const results=visible.filter(product=>{
+ const results=keyword==="" ? visible : visible.filter(product=>{
   const name=normalizeSearch(product.name);
   const id=normalizeSearch(product.id);
   const nameNumbers=name.replace(/\D/g,"");
@@ -5028,10 +5115,10 @@ function searchProducts(){
 
  results.forEach(product=>{
   const card=createCard(product);
-  if(card)shop.appendChild(card);
+  if(!card)return;
+  (isProductAvailable(product) ? shop : shopSold).appendChild(card);
  });
 }
-
 function handleSearchKey(event){
 
  if(event.key==="Enter"){
@@ -7287,6 +7374,19 @@ body.dark-mode .nav #loginNav .nav-icon-box{color:#e5edf7!important;}
   .nav button{flex:0 0 auto!important;}
 }
 
+
+/* ===== FINAL V6: slightly smaller, cleaner SVG header icons ===== */
+.nav button{gap:4px!important;}
+.nav .nav-icon-box{width:17px!important;height:17px!important;flex-basis:17px!important;}
+.nav .nav-icon-box svg{width:14px!important;height:14px!important;}
+.nav #themeToggle{width:34px!important;min-width:34px!important;}
+.nav #themeToggle svg{width:16px!important;height:16px!important;}
+.nav #loginNav{min-width:96px!important;padding-left:11px!important;padding-right:11px!important;}
+.nav #loginNav .nav-icon-box svg{width:14px!important;height:14px!important;}
+@media(max-width:1050px){
+ .nav #themeToggle{width:32px!important;min-width:32px!important;}
+ .nav #loginNav{min-width:82px!important;padding-left:8px!important;padding-right:8px!important;}
+}
 </style>
 </body>
 </html>
