@@ -3128,6 +3128,62 @@ body.dark-mode .nav #loginNav{box-shadow:none!important;}
  .nav #loginNav{min-width:86px!important;}
 }
 </style>
+
+<style id="lao-order-history-slip-fix">
+.slip-upload-box{margin:18px 0 16px;padding:16px;border:1px solid #dbe7f3;border-radius:18px;background:linear-gradient(180deg,#f8fbff,#fff);}
+.slip-upload-title{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:12px;color:#12314d;}
+.slip-upload-label{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-height:105px;border:1.5px dashed #8fb8dc;border-radius:15px;background:#fff;cursor:pointer;text-align:center;color:#0b78d0;font-weight:800;transition:.2s;}
+.slip-upload-label:hover{border-color:#087cff;transform:translateY(-1px);box-shadow:0 8px 22px rgba(30,100,170,.08);}
+.slip-upload-label small{font-weight:500;color:#7a8b9d;font-size:11px;}
+.slip-upload-icon{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:#eaf5ff;}
+.slip-upload-icon svg{width:22px;height:22px;}
+#paymentSlipFile{display:none;}
+.slip-preview{margin-top:10px;display:flex;align-items:center;gap:10px;min-height:0;}
+.slip-preview:empty{display:none;}
+.slip-preview img{width:68px;height:68px;object-fit:cover;border-radius:12px;border:1px solid #dbe7f3;box-shadow:0 5px 15px rgba(20,70,110,.08);}
+.slip-preview span{font-size:12px;color:#52677c;word-break:break-all;}
+.slip-preview-error{padding:10px 12px;border-radius:10px;background:#fff1f2;color:#dc2626;font-size:12px;font-weight:700;}
+.history-box{max-width:650px!important;width:calc(100% - 28px)!important;}
+.history-user-card{display:flex;align-items:center;gap:12px;padding:13px 15px;border:1px solid #e0ebf5;border-radius:15px;background:#f7fbff;margin-bottom:15px;}
+.history-user-icon{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:#e8f4ff;color:#087cff;flex:0 0 42px;}
+.history-user-icon svg{width:21px;height:21px;}
+.history-user-card div:last-child{display:flex;flex-direction:column;gap:2px;min-width:0;}
+.history-user-card b{font-size:14px;color:#18344e;}
+.history-user-card span{font-size:12px;color:#718398;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.history-content{display:flex;flex-direction:column;gap:11px;max-height:58vh;overflow:auto;padding-right:2px;}
+.history-loading,.history-empty,.history-error{min-height:150px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;color:#718398;}
+.history-empty b,.history-error b{color:#27445f;font-size:14px;}
+.history-empty span,.history-error span{font-size:12px;}
+.history-card{border:1px solid #dfe9f2;border-radius:16px;padding:14px;background:#fff;box-shadow:0 5px 18px rgba(25,75,120,.06);}
+.history-card-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.history-card-top>div{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.history-label{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#8494a5;font-weight:800;}
+.history-card-top b{font-size:12px;color:#38536b;word-break:break-all;}
+.history-status{padding:5px 9px;border-radius:999px;background:#e9f8ef;color:#168044;font-size:11px;font-weight:800;white-space:nowrap;}
+.history-product-row{display:flex;align-items:center;gap:10px;padding:11px;border-radius:13px;background:#f8fbfe;}
+.history-product-icon{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;background:#eaf5ff;color:#087cff;flex:0 0 38px;}
+.history-product-icon svg{width:20px;height:20px;}
+.history-product-row>div:last-child{display:flex;flex-direction:column;gap:3px;min-width:0;}
+.history-product-row b{font-size:13px;color:#213f59;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.history-product-row span{font-size:11px;color:#718398;}
+.history-meta{display:flex;flex-wrap:wrap;gap:10px;margin-top:11px;color:#718398;font-size:10px;}
+.history-meta span{display:inline-flex;align-items:center;gap:4px;}
+.history-meta svg{width:13px;height:13px;}
+.history-slip-link{display:inline-flex;align-items:center;gap:4px;color:#087cff;text-decoration:none;font-weight:800;}
+.history-slip-link:hover{text-decoration:underline;}
+.history-error button{margin-top:5px;border:0;border-radius:10px;padding:9px 15px;background:#087cff;color:#fff;font-weight:800;cursor:pointer;}
+body.dark-mode .slip-upload-box{border-color:#29445d;background:linear-gradient(180deg,#142536,#101c29);}
+body.dark-mode .slip-upload-title,body.dark-mode .history-card-top b{color:#e6f2ff;}
+body.dark-mode .slip-upload-label{background:#142536;border-color:#416d93;color:#6fc1ff;}
+body.dark-mode .history-user-card,.body.dark-mode .history-product-row{background:#142536;border-color:#29445d;}
+body.dark-mode .history-user-card b,body.dark-mode .history-empty b,body.dark-mode .history-error b,body.dark-mode .history-product-row b{color:#e6f2ff;}
+body.dark-mode .history-card{background:#101c29;border-color:#29445d;}
+@media(max-width:700px){
+ .history-content{max-height:62vh;}
+ .history-card{padding:12px;}
+ .history-meta{gap:7px;}
+}
+</style>
 </head>
 
 <body>
@@ -3260,6 +3316,11 @@ stroke-linejoin="round">
 <button id="profileNav" class="profile-nav-button" onclick="openProfile()" style="display:none">
 <span class="nav-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/></svg></span>
 <span id="profileNavName">ໂປຣໄຟລ໌</span>
+</button>
+
+<button id="historyNav" class="profile-nav-button" onclick="openHistory()">
+<span class="nav-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg></span>
+<span>ປະຫວັດຂອງຂ້ອຍ</span>
 </button>
 
 <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="ປ່ຽນສີເວັບ" title="ປ່ຽນສີເວັບ"><svg id="themeToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.1 2.3 2.5.4.7 2.4 2.1 1.4-1.1 2.3 1.1 2.3-2.1 1.4-.7 2.4-2.5.4L12 21l-1.1-2.3-2.5-.4-.7-2.4-2.1-1.4 1.1-2.3-1.1-2.3 2.1-1.4.7-2.4 2.5-.4L12 3Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
@@ -4286,6 +4347,43 @@ disabled>
 </div>
 
 <!-- =========================
+     MY ORDER HISTORY MODAL
+========================= -->
+<div id="historyModal" class="modal" onclick="closeHistoryOutside(event)">
+  <div class="modal-box history-box">
+    <div class="modal-header">
+      <h3 class="modal-title-icon">
+        <span class="title-icon-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 12a9 9 0 1 0 3-6.7"/>
+            <path d="M3 4v5h5"/>
+            <path d="M12 7v5l3 2"/>
+          </svg>
+        </span>
+        <span>ປະຫວັດການຊື້ຂອງຂ້ອຍ</span>
+      </h3>
+      <button class="close-modal" onclick="closeHistory()">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="history-user-card">
+        <div class="history-user-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/>
+          </svg>
+        </div>
+        <div>
+          <b id="historyUserName">-</b>
+          <span id="historyUserEmail">-</span>
+        </div>
+      </div>
+      <div id="historyContent" class="history-content">
+        <div class="history-loading">ກຳລັງໂຫຼດປະຫວັດ...</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================
      LOGIN / REGISTER MODAL
 ========================= -->
 <!-- AUTH NOTICE -->
@@ -4999,9 +5097,11 @@ function createCard(product){
 
     <button
     class="btn-detail"
-    onclick="openDetail(${product.id})">
+    onclick="openDetail(${product.id})"
+    aria-label="ເບິ່ງລາຍລະອຽດ">
 
-    ເບິ່ງລາຍລະອຽດ
+    ${icon("eye","sm")}
+    <span>ເບິ່ງລາຍລະອຽດ</span>
 
     </button>
 
@@ -5590,6 +5690,24 @@ function renderPayment(id){
 
   </div>
 
+  <div class="slip-upload-box">
+   <div class="slip-upload-title">
+    ${icon("image","sm")}
+    ອັບໂຫຼດສະລິບການໂອນ
+   </div>
+   <label class="slip-upload-label" for="paymentSlipFile">
+    <span class="slip-upload-icon">
+     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 16V4"/><path d="m7 9 5-5 5 5"/><path d="M5 20h14"/>
+     </svg>
+    </span>
+    <span>ເລືອກຮູບ Slip</span>
+    <small>JPG, PNG ແລະ WEBP</small>
+   </label>
+   <input id="paymentSlipFile" type="file" accept="image/jpeg,image/png,image/webp" onchange="previewPaymentSlip(event)">
+   <div id="paymentSlipPreview" class="slip-preview"></div>
+  </div>
+
   <div class="payment-gate">
 
    <div class="payment-gate-title">
@@ -5650,7 +5768,7 @@ function renderPayment(id){
    id="paymentSendButton"
    class="payment-send-button"
    type="button"
-   onclick="sendWhatsApp(${product.id})"
+   onclick="submitOrderWithSlip(${product.id})"
    disabled>
 
     ຍັງບໍ່ສາມາດສົ່ງໄດ້
@@ -5740,14 +5858,19 @@ function updatePaymentSendButton(){
 
 function openPayment(id){
 
- // ບັງຄັບໃຫ້ Login/Register ກ່ອນສັ່ງຊື້
+ /* =====================================================
+    LOGIN / REGISTER REQUIRED BEFORE PURCHASE
+    ຄົນທີ່ຍັງບໍ່ Login ຈະບໍ່ສາມາດເຂົ້າ Payment ໄດ້
+ ===================================================== */
  if(!isLoggedIn()){
-   // ເປີດ Login ທັນທີ ແລະຈື່ສິນຄ້າທີ່ຜູ້ໃຊ້ກົດຊື້
+   // ຈື່ສິນຄ້າທີ່ກົດໄວ້ ເພື່ອສັ່ງຕໍ່ຫຼັງ Login/Register
    sessionStorage.setItem("laogaming_pending_product", String(id));
 
+   // ປິດໜ້າລາຍລະອຽດ
    const detailModal=document.getElementById("detailModal");
    if(detailModal) detailModal.classList.remove("show");
 
+   // ເດັ້ງໄປໜ້າ Login / Register ທັນທີ
    openLogin();
    showAuthNotice(
      "ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້",
@@ -5874,6 +5997,233 @@ ${bankFullName}
 
  window.open(url,"_blank");
 
+}
+
+async function submitOrderWithSlip(id){
+
+ const user=getLoggedInUser();
+ const product=products.find(p=>p.id===id);
+ const checkbox=document.getElementById("paymentConfirmCheck");
+ const button=document.getElementById("paymentSendButton");
+ const fileInput=document.getElementById("paymentSlipFile");
+
+ if(!user){
+  sessionStorage.setItem("laogaming_pending_product",String(id));
+  closePayment();
+  openLogin();
+  showAuthNotice("ກະລຸນາ Login ກ່ອນສັ່ງຊື້","error");
+  return;
+ }
+
+ if(!product || product.stock!==true || Number(product.stockQty||0)<=0){
+  alert("ຂໍອະໄພ ສິນຄ້ານີ້ບໍ່ມີແລ້ວ.");
+  return;
+ }
+
+ if(!checkbox || !checkbox.checked){
+  sendAttemptBlocked=true;
+  updatePaymentSendButton();
+  alert("ກະລຸນາຢືນຢັນວ່າຊຳລະເງິນແລ້ວກ່ອນ.");
+  return;
+ }
+
+ if(!fileInput || !fileInput.files || !fileInput.files[0]){
+  alert("ກະລຸນາອັບໂຫຼດ Slip ກ່ອນກົດຢືນຢັນ.");
+  return;
+ }
+
+ const file=fileInput.files[0];
+ if(!/^image\/(jpeg|png|webp)$/i.test(file.type)){
+  alert("ຮອງຮັບສະເພາະ JPG, PNG ແລະ WEBP.");
+  return;
+ }
+ if(file.size>8*1024*1024){
+  alert("ຮູບ Slip ຕ້ອງບໍ່ເກີນ 8MB.");
+  return;
+ }
+
+ if(button){
+  button.disabled=true;
+  button.classList.add("ready");
+  button.textContent="ກຳລັງອັບໂຫຼດ Slip...";
+ }
+
+ try{
+  const slipBase64=await fileToDataURL(file);
+  const bankName=selectedPayment==="BCELONE"?"BCEL ONE":selectedPayment==="UMONEY"?"U-MONEY":"IB COOL";
+
+  const payload={
+   action:"createOrder",
+   userId:String(user.id||""),
+   name:String(user.name||""),
+   email:String(user.email||""),
+   productId:String(product.id),
+   product:String(product.name||""),
+   qty:1,
+   price:Number(product.price||0),
+   payment:bankName,
+   slipName:file.name||"slip.jpg",
+   slipType:file.type||"image/jpeg",
+   slipBase64:slipBase64
+  };
+
+  const response=await fetch(ORDER_API,{
+   method:"POST",
+   headers:{"Content-Type":"text/plain;charset=utf-8"},
+   body:JSON.stringify(payload),
+   cache:"no-store"
+  });
+
+  const text=await response.text();
+  let result;
+  try{ result=JSON.parse(text); }
+  catch(e){ throw new Error("API ຕອບກັບບໍ່ແມ່ນ JSON"); }
+
+  if(!result.success){
+   throw new Error(result.message||"ບັນທຶກອໍເດີບໍ່ສຳເລັດ");
+  }
+
+  // ບັນທຶກ Order ໄວ້ໃນ browser ຂອງບັນຊີນີ້ກ່ອນ ເພື່ອໃຫ້ History ຍັງເຫັນໄດ້
+  // ແມ່ນແຕ່ຕອນ API ຕອບຊ້າ/ມີບັນຫາ. API ຍັງເປັນບ່ອນຫຼັກ.
+  try{
+    const historyKey="laogaming_history_"+String(user.email||"").trim().toLowerCase();
+    const cached=JSON.parse(localStorage.getItem(historyKey)||"[]");
+    cached.unshift({
+      orderId:String(result.orderId||""), userId:String(user.id||""),
+      name:String(user.name||""), email:String(user.email||""),
+      productId:String(product.id), product:String(product.name||""), qty:1,
+      price:Number(product.price||0), payment:bankName,
+      date:new Date().toLocaleDateString("en-GB"),
+      time:new Date().toLocaleTimeString("en-GB",{hour12:false}),
+      slipName:file.name||"slip.jpg", slipUrl:"", status:String(result.status||"ສຳເລັດ")
+    });
+    localStorage.setItem(historyKey,JSON.stringify(cached));
+  }catch(cacheError){ console.warn("History cache error:",cacheError); }
+
+  closePayment();
+  showAuthNotice("ສັ່ງຊື້ສຳເລັດ ✓ Order: "+(result.orderId||"OK"),"success");
+  sessionStorage.removeItem("laogaming_pending_product");
+  setTimeout(function(){ openHistory(); },350);
+
+ }catch(error){
+  console.error("Create order error:",error);
+  alert(error.message||"ບໍ່ສາມາດບັນທຶກອໍເດີໄດ້");
+ }finally{
+  if(button){
+   button.disabled=!checkbox.checked;
+   button.textContent=checkbox.checked?"ຢືນຢັນ ແລະ ສົ່ງສະລິບ":"ຍັງບໍ່ສາມາດສົ່ງໄດ້";
+  }
+ }
+}
+
+function fileToDataURL(file){
+ return new Promise(function(resolve,reject){
+  const reader=new FileReader();
+  reader.onload=function(){resolve(reader.result);};
+  reader.onerror=reject;
+  reader.readAsDataURL(file);
+ });
+}
+
+function previewPaymentSlip(event){
+ const file=event.target.files && event.target.files[0];
+ const preview=document.getElementById("paymentSlipPreview");
+ if(!preview)return;
+ if(!file){preview.innerHTML="";return;}
+ if(file.size>8*1024*1024){
+  preview.innerHTML='<div class="slip-preview-error">ຮູບໃຫຍ່ເກີນ 8MB</div>';
+  return;
+ }
+ const reader=new FileReader();
+ reader.onload=function(){
+  preview.innerHTML=`<img src="${reader.result}" alt="Slip preview"><span>${escapeHtml(file.name)}</span>`;
+ };
+ reader.readAsDataURL(file);
+}
+
+function escapeHtml(value){
+ return String(value||"").replace(/[&<>'"]/g,function(c){
+  return ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"})[c];
+ });
+}
+
+async function openHistory(){
+ const user=getLoggedInUser();
+ if(!user){
+  sessionStorage.setItem("laogaming_open_history","1");
+  openLogin();
+  showAuthNotice("ກະລຸນາລັອກອິນ ຫຼື ສະໝັກບັນຊີກ່ອນເບິ່ງປະຫວັດ","error");
+  return;
+ }
+
+ const modal=document.getElementById("historyModal");
+ const content=document.getElementById("historyContent");
+ const name=document.getElementById("historyUserName");
+ const email=document.getElementById("historyUserEmail");
+ if(!modal||!content)return;
+
+ name.textContent=user.name||"User";
+ email.textContent=user.email||"-";
+ content.innerHTML='<div class="history-loading">ກຳລັງໂຫຼດປະຫວັດ...</div>';
+ modal.classList.add("show");
+
+ try{
+  const emailKey=String(user.email||"").trim().toLowerCase();
+  const cacheKey="laogaming_history_"+emailKey;
+  let orders=[];
+
+  try{
+    const url=ORDER_API+"?action=getHistory&email="+encodeURIComponent(emailKey)+"&_="+Date.now();
+    const response=await fetch(url,{method:"GET",cache:"no-store"});
+    const text=await response.text();
+    let result;
+    try{ result=JSON.parse(text); }catch(e){ throw new Error("API ປະຫວັດຕອບກັບບໍ່ຖືກຮູບແບບ"); }
+    if(!result.success)throw new Error(result.message||"ໂຫຼດປະຫວັດບໍ່ສຳເລັດ");
+    orders=Array.isArray(result.orders)?result.orders:[];
+    localStorage.setItem(cacheKey,JSON.stringify(orders));
+  }catch(apiError){
+    console.warn("History API error, using local history cache:",apiError);
+    try{ orders=JSON.parse(localStorage.getItem(cacheKey)||"[]"); }catch(e){ orders=[]; }
+    if(!orders.length){
+      throw apiError;
+    }
+  }
+  if(!orders.length){
+   content.innerHTML=`<div class="history-empty">${icon("clock","md")}<b>ຍັງບໍ່ມີປະຫວັດການຊື້</b><span>ອໍເດີຂອງເຈົ້າຈະສະແດງຢູ່ບ່ອນນີ້.</span></div>`;
+   return;
+  }
+
+  content.innerHTML=orders.map(function(order){
+   const status=String(order.status||"ສຳເລັດ");
+   return `<article class="history-card">
+    <div class="history-card-top">
+      <div><span class="history-label">Order ID</span><b>${escapeHtml(order.orderId)}</b></div>
+      <span class="history-status">${escapeHtml(status)}</span>
+    </div>
+    <div class="history-product-row">
+      <div class="history-product-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l1 13H5L6 8Z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg></div>
+      <div><b>${escapeHtml(order.product||"-")}</b><span>${formatPrice(Number(order.price||0))} • ${escapeHtml(order.payment||"-")}</span></div>
+    </div>
+    <div class="history-meta">
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>${escapeHtml(order.date||"-")}</span>
+      <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>${escapeHtml(order.time||"-")}</span>
+      <span>${order.slipUrl ? `<a href="${escapeHtml(order.slipUrl)}" target="_blank" rel="noopener" class="history-slip-link"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v13H4z"/><path d="m7 4 2-2h6l2 2"/></svg>${escapeHtml(order.slipName||"ເບິ່ງ Slip")}</a>` : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16v13H4z"/><path d="m7 4 2-2h6l2 2"/></svg>${escapeHtml(order.slipName||"Slip")}`}</span>
+    </div>
+   </article>`;
+  }).join("");
+
+ }catch(error){
+  console.error("History error:",error);
+  content.innerHTML=`<div class="history-error">${icon("warning","md")}<b>ໂຫຼດປະຫວັດບໍ່ສຳເລັດ</b><span>${escapeHtml(error.message||"")}</span><button type="button" onclick="openHistory()">ລອງໃໝ່</button></div>`;
+ }
+}
+
+function closeHistory(){
+ const modal=document.getElementById("historyModal");
+ if(modal)modal.classList.remove("show");
+}
+function closeHistoryOutside(event){
+ if(event.target.id==="historyModal")closeHistory();
 }
 
 function closePayment(){
@@ -6167,6 +6517,12 @@ window.addEventListener("load",function(){
 
 const LOGIN_API =
 "https://script.google.com/macros/s/AKfycbxSn9jvZz-3KAvpuVh5uZuyD1hZ_AzrY3OSYC_d__3Srd44tdGMC4nsgf2dq8bzXaUT/exec";
+
+/* =========================
+   LAO GAMING ORDER API
+========================= */
+const ORDER_API =
+"https://script.google.com/macros/s/AKfycbyjw2-sutskpK0qEty110jA32mH4GeU0dBDdKcKlJx1VDzwgo_u6OcHPE59fvPh9JdA/exec";
 
 /* =========================================================
    LOGIN API PRE-WARM
@@ -6541,6 +6897,12 @@ async function loginAccount(){
         openPayment(Number(pendingProductId));
       }
 
+      const pendingHistory = sessionStorage.getItem("laogaming_open_history");
+      if(pendingHistory){
+        sessionStorage.removeItem("laogaming_open_history");
+        setTimeout(function(){ openHistory(); }, 180);
+      }
+
       const pendingGmailQty = sessionStorage.getItem("laogaming_pending_gmail_qty");
       if(pendingGmailQty){
         sessionStorage.removeItem("laogaming_pending_gmail_qty");
@@ -6669,6 +7031,7 @@ function closeProfile(){
 
 function logoutAccount(){
   closeProfile();
+  closeHistory();
   localStorage.removeItem("laogaming_user");
   updateLoginStatus();
   updateShopMenuAuth();
