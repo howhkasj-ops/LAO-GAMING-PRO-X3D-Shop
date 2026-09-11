@@ -3591,11 +3591,12 @@ onclick="showPage('shop')">
 
 <div class="stock-box">
 <div class="stock-box-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-<path d="M3.5 8.5 12 4l8.5 4.5L12 13 3.5 8.5Z"/>
-<path d="M3.5 8.5v7L12 20l8.5-4.5v-7"/>
-<path d="M12 13v7"/>
-<path d="M7.5 6.5 16 11"/>
+<!-- Inventory / package icon -->
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="m4 7 8-4 8 4-8 4-8-4Z"/>
+<path d="M4 7v10l8 4 8-4V7"/>
+<path d="M12 11v10"/>
+<path d="m8 5 8 4"/>
 </svg>
 </div>
 <div id="availableCount" class="stock-number">0</div>
@@ -3604,10 +3605,12 @@ onclick="showPage('shop')">
 
 <div class="stock-box">
 <div class="stock-box-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-<ellipse cx="12" cy="6.5" rx="7.5" ry="3.5"/>
-<path d="M4.5 6.5v5c0 1.9 3.4 3.5 7.5 3.5s7.5-1.6 7.5-3.5v-5"/>
-<path d="M4.5 11.5v5c0 1.9 3.4 3.5 7.5 3.5s7.5-1.6 7.5-3.5v-5"/>
+<!-- Remaining stock / warehouse icon -->
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M3 9 12 4l9 5"/>
+<path d="M4 9v10h16V9"/>
+<path d="M8 19v-5h8v5"/>
+<path d="M7 11h.01M12 11h.01M17 11h.01"/>
 </svg>
 </div>
 <div id="stockQtyCount" class="stock-number">0</div>
@@ -3616,10 +3619,11 @@ onclick="showPage('shop')">
 
 <div class="stock-box">
 <div class="stock-box-icon">
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.35" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-<path d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5v-9Z"/>
-<path d="M4 7.5 12 12l8-4.5M12 12v9"/>
-<path d="m8.5 15 2 2 5-5"/>
+<!-- Sold / shopping bag with check icon -->
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.45" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+<path d="M6 8h12l1 13H5L6 8Z"/>
+<path d="M9 8V6a3 3 0 0 1 6 0v2"/>
+<path d="m8.5 14 2.2 2.2 4.8-4.8"/>
 </svg>
 </div>
 <div id="soldCount" class="stock-number">0</div>
@@ -6307,18 +6311,55 @@ async function registerAccount(){
 
     if(result.success){
 
+      /* =====================================================
+         REGISTER -> AUTO LOGIN
+         ຫຼັງຈາກສະໝັກສຳເລັດ ເຂົ້າໜ້າ Shop ທັນທີ
+         ບໍ່ຕ້ອງໃຫ້ລູກຄ້າກົດ Login ຊ້ຳ
+         ບໍ່ແຕະ Code.gs
+      ===================================================== */
       document.getElementById("registerName").value="";
       document.getElementById("registerEmail").value="";
       document.getElementById("registerPassword").value="";
       document.getElementById("registerPassword2").value="";
 
-      showLogin();
+      let registeredUser = result.user || null;
 
-      document.getElementById("loginEmail").value=email;
-      document.getElementById("loginPassword").value="";
+      // ຖ້າ Code.gs ສົ່ງ user ກັບມາ ໃຊ້ໄດ້ເລີຍ
+      // ຖ້າບໍ່ມີ user ໃຫ້ Login ອັດຕະໂນມັດ 1 ຄັ້ງ
+      if(!registeredUser){
+        const autoLogin = await authRequest("login",{
+          email:email,
+          password:password
+        });
+
+        if(autoLogin && autoLogin.success && autoLogin.user){
+          registeredUser = autoLogin.user;
+        }else{
+          // ບັນຊີສ້າງສຳເລັດແລ້ວ ແຕ່ Auto Login ບໍ່ຜ່ານ
+          showLogin();
+          document.getElementById("loginEmail").value=email;
+          document.getElementById("loginPassword").value="";
+          showAuthNotice(
+            "ສະໝັກສຳເລັດ — ກະລຸນາ Login ອີກຄັ້ງ",
+            "success"
+          );
+          return;
+        }
+      }
+
+      // ເຂົ້າລະບົບທັນທີ ແລະເຂົ້າ Shop
+      localStorage.setItem(
+        "laogaming_user",
+        JSON.stringify(registeredUser)
+      );
+
+      closeLogin();
+      showPage("shop");
+      updateLoginStatus();
+      updateShopMenuAuth();
 
       showAuthNotice(
-        "ສະໝັກບັນຊີສຳເລັດ — ສາມາດ Login ໄດ້ແລ້ວ",
+        "ສະໝັກສຳເລັດ ✓ ເຂົ້າໃຊ້ງານແລ້ວ",
         "success"
       );
 
@@ -7803,7 +7844,283 @@ body.dark-mode .shop-menu-item:hover{
 body.dark-mode .shop-menu-title{
   color:#94a3b8!important;
 }
-</style>
+
+
+/* =========================================================
+   PRODUCT + DETAIL POLISH — clean premium storefront
+   ເນັ້ນກາດສິນຄ້າ + ໜ້າລາຍລະອຽດໃຫ້ສະອາດ ແລະທັນສະໄໝ
+========================================================= */
+.products{
+  align-items:stretch!important;
+  gap:20px!important;
+}
+.product{
+  position:relative!important;
+  display:flex!important;
+  flex-direction:column!important;
+  min-width:0!important;
+  border:1px solid #dcefff!important;
+  border-radius:22px!important;
+  background:#fff!important;
+  overflow:hidden!important;
+  box-shadow:0 12px 32px rgba(15,96,160,.10)!important;
+  transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease!important;
+}
+.product::before{
+  content:"";
+  position:absolute;
+  left:0;right:0;top:0;
+  height:3px;
+  background:linear-gradient(90deg,#087cff,#22c7ff,#66e8f9)!important;
+  z-index:5;
+}
+.product:hover{
+  transform:translateY(-7px)!important;
+  border-color:#9ddcff!important;
+  box-shadow:0 22px 50px rgba(8,124,255,.17)!important;
+}
+.product-image{
+  position:relative!important;
+  height:245px!important;
+  flex:none!important;
+  background:radial-gradient(circle at 50% 35%,#fff 0,#eef9ff 52%,#dff3ff 100%)!important;
+  overflow:hidden!important;
+}
+.product-image img{
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  transition:transform .55s cubic-bezier(.2,.7,.2,1),filter .3s ease!important;
+}
+.product:hover .product-image img{
+  transform:scale(1.065)!important;
+}
+.product-image::after{
+  background:linear-gradient(180deg,rgba(255,255,255,0) 48%,rgba(4,39,72,.20) 100%)!important;
+}
+.available-badge{
+  top:14px!important;
+  left:14px!important;
+  padding:7px 11px!important;
+  border-radius:999px!important;
+  backdrop-filter:blur(10px)!important;
+  -webkit-backdrop-filter:blur(10px)!important;
+  background:rgba(236,253,245,.94)!important;
+  color:#15803d!important;
+  border:1px solid rgba(255,255,255,.85)!important;
+  box-shadow:0 8px 22px rgba(22,163,74,.18)!important;
+  font-size:11px!important;
+  font-weight:950!important;
+}
+.stock-count{
+  right:14px!important;
+  bottom:14px!important;
+  padding:7px 11px!important;
+  border-radius:999px!important;
+  background:rgba(7,27,45,.78)!important;
+  color:#fff!important;
+  border:1px solid rgba(255,255,255,.30)!important;
+  backdrop-filter:blur(9px)!important;
+  -webkit-backdrop-filter:blur(9px)!important;
+  box-shadow:0 8px 22px rgba(0,0,0,.16)!important;
+  font-size:11px!important;
+  font-weight:900!important;
+}
+.product-content{
+  display:flex!important;
+  flex-direction:column!important;
+  flex:1!important;
+  padding:18px!important;
+  background:linear-gradient(180deg,#fff 0%,#fbfdff 100%)!important;
+}
+.product-title{
+  min-height:46px!important;
+  margin:0!important;
+  color:#142238!important;
+  font-size:16px!important;
+  line-height:1.45!important;
+  font-weight:950!important;
+  letter-spacing:.1px!important;
+}
+.product-price{
+  display:block!important;
+  margin-top:12px!important;
+  padding:10px 12px!important;
+  border-radius:13px!important;
+  background:linear-gradient(135deg,#eff8ff,#f9fdff)!important;
+  border:1px solid #d8efff!important;
+  color:#087cff!important;
+  font-size:20px!important;
+  font-weight:950!important;
+  line-height:1.2!important;
+}
+.product-status{
+  margin-top:10px!important;
+  min-height:20px!important;
+  color:#16a34a!important;
+  font-size:12px!important;
+  font-weight:900!important;
+}
+.product-buttons{
+  margin-top:auto!important;
+}
+.btn-detail{
+  width:100%!important;
+  min-height:46px!important;
+  margin-top:14px!important;
+  border-radius:14px!important;
+  font-size:13px!important;
+  font-weight:950!important;
+}
+
+/* Detail modal */
+#detailModal .modal-box{
+  width:min(940px,calc(100vw - 28px))!important;
+  max-height:min(90vh,900px)!important;
+  border-radius:26px!important;
+  overflow:hidden!important;
+  border:1px solid rgba(142,207,255,.65)!important;
+  box-shadow:0 30px 90px rgba(0,54,100,.24)!important;
+  background:#f8fcff!important;
+}
+#detailModal .modal-header{
+  min-height:64px!important;
+  padding:14px 18px!important;
+  background:rgba(255,255,255,.96)!important;
+  border-bottom:1px solid #dcefff!important;
+  position:relative!important;
+  z-index:2!important;
+}
+#detailModal .modal-header h3{
+  font-size:16px!important;
+  font-weight:950!important;
+  color:#142238!important;
+}
+#detailModal .modal-body{
+  padding:18px!important;
+  overflow:auto!important;
+}
+#detailModal .detail-main-image{
+  height:420px!important;
+  border-radius:22px!important;
+  border:1px solid #d8efff!important;
+  background:radial-gradient(circle at 50% 35%,#fff 0,#eef9ff 58%,#dff3ff 100%)!important;
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.75),0 14px 35px rgba(0,93,160,.09)!important;
+}
+#detailModal .detail-main-image img{
+  padding:12px!important;
+  object-fit:contain!important;
+}
+#detailModal .gallery{
+  display:grid!important;
+  grid-template-columns:repeat(4,minmax(0,1fr))!important;
+  gap:10px!important;
+  margin-top:12px!important;
+  padding:0!important;
+}
+#detailModal .gallery img{
+  height:92px!important;
+  padding:3px!important;
+  object-fit:cover!important;
+  border-radius:14px!important;
+  border:2px solid #e0f2ff!important;
+  background:#fff!important;
+  box-shadow:0 5px 15px rgba(0,88,150,.07)!important;
+}
+#detailModal .gallery img:hover{
+  transform:translateY(-2px)!important;
+  border-color:#62c6ff!important;
+}
+#detailModal .detail-info{
+  margin-top:14px!important;
+  padding:20px!important;
+  border-radius:22px!important;
+  background:#fff!important;
+  border:1px solid #dcefff!important;
+  box-shadow:0 12px 30px rgba(0,90,155,.08)!important;
+}
+#detailModal .detail-name{
+  font-size:25px!important;
+  line-height:1.35!important;
+  font-weight:950!important;
+  color:#142238!important;
+}
+#detailModal .detail-price{
+  display:inline-flex!important;
+  align-items:center!important;
+  margin-top:12px!important;
+  padding:10px 15px!important;
+  border-radius:14px!important;
+  background:linear-gradient(135deg,#087cff,#20a9ff)!important;
+  color:#fff!important;
+  font-size:22px!important;
+  font-weight:950!important;
+  box-shadow:0 10px 24px rgba(8,124,255,.20)!important;
+}
+#detailModal .detail-stock{
+  margin-top:13px!important;
+  padding:12px 14px!important;
+  border-radius:14px!important;
+  font-size:13px!important;
+  font-weight:900!important;
+}
+#detailModal .detail-list{
+  margin-top:15px!important;
+  gap:9px!important;
+}
+#detailModal .detail-item{
+  padding:12px 13px!important;
+  border-radius:13px!important;
+  background:#f6fbff!important;
+  border:1px solid #deeffa!important;
+  color:#26384d!important;
+  font-size:13px!important;
+  line-height:1.55!important;
+  font-weight:750!important;
+}
+#detailModal .buy-button{
+  min-height:52px!important;
+  margin-top:18px!important;
+  border-radius:15px!important;
+  font-size:15px!important;
+}
+
+/* Dark mode */
+body.dark-mode .product{
+  background:#101b2a!important;
+  border-color:#2a3b51!important;
+  box-shadow:0 14px 36px rgba(0,0,0,.22)!important;
+}
+body.dark-mode .product-content{background:linear-gradient(180deg,#101b2a,#0d1725)!important;}
+body.dark-mode .product-title{color:#fff!important;}
+body.dark-mode .product-price{background:#12283b!important;border-color:#284a63!important;color:#67e8f9!important;}
+body.dark-mode .product-status{color:#4ade80!important;}
+body.dark-mode #detailModal .modal-box{background:#0d1724!important;border-color:#2a3b51!important;}
+body.dark-mode #detailModal .modal-header{background:#111c2b!important;border-color:#2a3b51!important;}
+body.dark-mode #detailModal .modal-header h3{color:#fff!important;}
+body.dark-mode #detailModal .detail-main-image{background:radial-gradient(circle at 50% 35%,#17283a 0,#101f30 60%,#0c1724 100%)!important;border-color:#2a3b51!important;}
+body.dark-mode #detailModal .detail-info{background:#111c2b!important;border-color:#2a3b51!important;}
+body.dark-mode #detailModal .detail-name{color:#fff!important;}
+body.dark-mode #detailModal .detail-item{background:#0e1b29!important;border-color:#2a3b51!important;color:#dbeafe!important;}
+body.dark-mode #detailModal .gallery img{background:#111c2b!important;border-color:#2a3b51!important;}
+
+@media(max-width:700px){
+  .products{gap:14px!important;}
+  .product{border-radius:18px!important;}
+  .product-image{height:205px!important;}
+  .product-content{padding:14px!important;}
+  .product-title{font-size:14px!important;min-height:42px!important;}
+  .product-price{font-size:17px!important;padding:9px 10px!important;}
+  .btn-detail{min-height:43px!important;font-size:12px!important;}
+  #detailModal .modal-box{width:calc(100vw - 18px)!important;border-radius:20px!important;}
+  #detailModal .modal-body{padding:12px!important;}
+  #detailModal .detail-main-image{height:300px!important;border-radius:17px!important;}
+  #detailModal .gallery{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
+  #detailModal .gallery img{height:78px!important;}
+  #detailModal .detail-info{padding:15px!important;border-radius:17px!important;}
+  #detailModal .detail-name{font-size:21px!important;}
+  #detailModal .detail-price{font-size:19px!important;}
+}
 
 </style>
 </body>
