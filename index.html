@@ -826,6 +826,16 @@ body::after{
  transform:scale(1.045);
 }
 
+.free-fire-badge{
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ min-height:20px;
+ padding:2px 8px;
+ font-size:10px;
+ font-weight:1000;
+ letter-spacing:.5px;
+}
 .available-badge{
  position:absolute;
  top:12px;
@@ -2978,6 +2988,63 @@ body.dark-mode .theme-toggle{background:#1b202b;color:#fff;border-color:#394153}
 /* Keep the original navigation/functions intact, but use the 3-dot menu as the visible navigation. */
 .nav{display:none!important}
 
+
+/* ===== CORRECT PRODUCT STATUS ===== */
+.product-status.available{
+  width:auto!important;
+  min-width:0!important;
+  height:auto!important;
+  min-height:30px!important;
+  margin-top:10px!important;
+  padding:6px 12px!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:6px!important;
+  border-radius:999px!important;
+  background:linear-gradient(135deg,#16a34a,#22c55e)!important;
+  color:#fff!important;
+  font-size:11px!important;
+  font-weight:950!important;
+  line-height:1!important;
+  box-shadow:0 5px 16px rgba(22,163,74,.22)!important;
+  animation:availableStatusPulse 1.8s ease-in-out infinite!important;
+}
+.product-status.available .status-dot{
+  width:7px!important;
+  height:7px!important;
+  flex:0 0 7px!important;
+  border-radius:50%!important;
+  background:#fff!important;
+  box-shadow:0 0 0 0 rgba(255,255,255,.75)!important;
+  animation:availableDotPulse 1.5s ease-out infinite!important;
+}
+@keyframes availableStatusPulse{
+  0%,100%{transform:scale(1);box-shadow:0 5px 16px rgba(22,163,74,.20)}
+  50%{transform:scale(1.025);box-shadow:0 7px 20px rgba(22,163,74,.34)}
+}
+@keyframes availableDotPulse{
+  0%{box-shadow:0 0 0 0 rgba(255,255,255,.70)}
+  70%{box-shadow:0 0 0 6px rgba(255,255,255,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,255,255,0)}
+}
+
+/* Sold item: exactly one red button */
+.product-status.sold{
+  display:none!important;
+}
+.btn-detail.sold{
+  width:100%!important;
+  min-height:46px!important;
+  margin-top:14px!important;
+  padding:11px 14px!important;
+  border-radius:14px!important;
+  background:linear-gradient(135deg,#ef4444,#dc2626)!important;
+  color:#fff!important;
+  border:1px solid #ef4444!important;
+  box-shadow:0 8px 20px rgba(220,38,38,.24)!important;
+  cursor:not-allowed!important;
+}
 </style>
 
 <style>
@@ -4903,8 +4970,7 @@ function createCard(product){
    <img src="${product.image}" alt="${product.name}">
 
    <div class="available-badge">
-    ${icon("check","sm")}
-    
+    <span class="free-fire-badge">FREE FIRE</span>
    </div>
 
    <div class="stock-count">
@@ -4924,10 +4990,10 @@ function createCard(product){
     ${formatPrice(product.price)}
    </div>
 
-   <div class="product-status">
-    ${icon("check","sm")}
-    ສິນຄ້າຍັງມີ
-   </div>
+   <div class="product-status available" aria-label="ສິນຄ້າຍັງຢູ່" title="ສິນຄ້າຍັງຢູ່">
+     <span class="status-dot"></span>
+     <span>ສິນຄ້າຍັງຢູ່</span>
+    </div>
 
    <div class="product-buttons">
 
@@ -4971,10 +5037,6 @@ function createCard(product){
 
    <div class="product-price sold-price">
     ຂາຍແລ້ວ
-   </div>
-
-   <div class="product-status sold">
-    ● ຂາຍແລ້ວ
    </div>
 
    <div class="product-buttons">
@@ -5680,15 +5742,17 @@ function openPayment(id){
 
  // ບັງຄັບໃຫ້ Login/Register ກ່ອນສັ່ງຊື້
  if(!isLoggedIn()){
+   // ເປີດ Login ທັນທີ ແລະຈື່ສິນຄ້າທີ່ຜູ້ໃຊ້ກົດຊື້
    sessionStorage.setItem("laogaming_pending_product", String(id));
 
    const detailModal=document.getElementById("detailModal");
    if(detailModal) detailModal.classList.remove("show");
 
    openLogin();
-   setTimeout(function(){
-     showAuthNotice("ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້","error");
-   },80);
+   showAuthNotice(
+     "ກະລຸນາເຂົ້າສູ່ລະບົບ ຫຼື ສະໝັກສະມາຊິກກ່ອນສັ່ງຊື້",
+     "error"
+   );
    return;
  }
 
@@ -6443,7 +6507,7 @@ async function loginAccount(){
     if(loginButton){
       loginButton.disabled = true;
       loginButton.dataset.oldText = loginButton.textContent;
-      loginButton.textContent = "ກຳລັງເຂົ້າ...";
+      loginButton.textContent = "ເຂົ້າສູລະບົບ";
       loginButton.style.opacity = "0.75";
       loginButton.style.pointerEvents = "none";
     }
@@ -6473,9 +6537,8 @@ async function loginAccount(){
       const pendingProductId = sessionStorage.getItem("laogaming_pending_product");
       if(pendingProductId){
         sessionStorage.removeItem("laogaming_pending_product");
-        setTimeout(function(){
-          openPayment(Number(pendingProductId));
-        }, 150);
+        // ເຂົ້າໜ້າສິນຄ້າ/ຊຳລະທັນທີ ບໍ່ຕ້ອງລໍ 150ms
+        openPayment(Number(pendingProductId));
       }
 
       const pendingGmailQty = sessionStorage.getItem("laogaming_pending_gmail_qty");
@@ -6542,6 +6605,7 @@ async function loginAccount(){
       loginButton.textContent = loginButton.dataset.oldText || "ເຂົ້າສູລະບົບ";
       loginButton.style.opacity = "";
       loginButton.style.pointerEvents = "";
+      // Login failure/loading must never log the user out.
     }
 
   }
@@ -7196,10 +7260,11 @@ body.dark-mode .card,body.dark-mode .modal-content,body.dark-mode .auth-box,body
 .product-price{color:#087cff!important;}
 .product-status.sold,.sold-price{color:#ef4444!important;}
 .btn-detail.sold{
- background:#f1f5f9!important;
- color:#64748b!important;
- border-color:#d8e2ec!important;
+ background:linear-gradient(135deg,#ef4444,#dc2626)!important;
+ color:#fff!important;
+ border-color:#ef4444!important;
  cursor:not-allowed!important;
+ box-shadow:0 8px 20px rgba(220,38,38,.22)!important;
 }
 
 /* Light theme = white surface + black text */
@@ -7976,12 +8041,23 @@ body.dark-mode .shop-menu-title{
 /* Detail modal */
 #detailModal .modal-box{
   width:min(940px,calc(100vw - 28px))!important;
-  max-height:min(90vh,900px)!important;
+  height:min(90vh,900px)!important;
+  max-height:90vh!important;
+  display:flex!important;
+  flex-direction:column!important;
   border-radius:26px!important;
   overflow:hidden!important;
   border:1px solid rgba(142,207,255,.65)!important;
   box-shadow:0 30px 90px rgba(0,54,100,.24)!important;
   background:#f8fcff!important;
+}
+#detailModal .modal-body{
+  flex:1 1 auto!important;
+  min-height:0!important;
+  overflow-y:auto!important;
+  overflow-x:hidden!important;
+  -webkit-overflow-scrolling:touch!important;
+  overscroll-behavior:contain!important;
 }
 #detailModal .modal-header{
   min-height:64px!important;
@@ -8112,7 +8188,7 @@ body.dark-mode #detailModal .gallery img{background:#111c2b!important;border-col
   .product-title{font-size:14px!important;min-height:42px!important;}
   .product-price{font-size:17px!important;padding:9px 10px!important;}
   .btn-detail{min-height:43px!important;font-size:12px!important;}
-  #detailModal .modal-box{width:calc(100vw - 18px)!important;border-radius:20px!important;}
+  #detailModal .modal-box{width:calc(100vw - 18px)!important;height:calc(100vh - 18px)!important;max-height:calc(100vh - 18px)!important;border-radius:20px!important;}
   #detailModal .modal-body{padding:12px!important;}
   #detailModal .detail-main-image{height:300px!important;border-radius:17px!important;}
   #detailModal .gallery{grid-template-columns:repeat(3,minmax(0,1fr))!important;}
@@ -8120,6 +8196,114 @@ body.dark-mode #detailModal .gallery img{background:#111c2b!important;border-col
   #detailModal .detail-info{padding:15px!important;border-radius:17px!important;}
   #detailModal .detail-name{font-size:21px!important;}
   #detailModal .detail-price{font-size:19px!important;}
+}
+
+
+/* ===== FREE FIRE animated status badge ===== */
+.free-fire-badge{
+  position:relative!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  min-height:22px!important;
+  padding:3px 10px!important;
+  border-radius:999px!important;
+  overflow:hidden!important;
+  isolation:isolate!important;
+  font-size:10px!important;
+  font-weight:1000!important;
+  letter-spacing:.65px!important;
+  color:#fff!important;
+  background:linear-gradient(90deg,#ff4d4d,#ff8a00,#ffe45c,#ff8a00,#ff4d4d)!important;
+  background-size:300% 100%!important;
+  box-shadow:0 0 0 1px rgba(255,255,255,.35) inset,0 4px 14px rgba(255,105,0,.28)!important;
+  animation:freeFireBadgeMove 2.2s linear infinite,freeFireBadgePulse 1.6s ease-in-out infinite!important;
+}
+.free-fire-badge::before{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:-1!important;
+  background:linear-gradient(120deg,transparent 25%,rgba(255,255,255,.75) 48%,transparent 68%)!important;
+  transform:translateX(-130%) skewX(-18deg)!important;
+  animation:freeFireBadgeShine 2.4s ease-in-out infinite!important;
+}
+.free-fire-badge::after{
+  content:"🔥"!important;
+  margin-left:5px!important;
+  font-size:11px!important;
+  line-height:1!important;
+  filter:drop-shadow(0 1px 2px rgba(0,0,0,.25))!important;
+  animation:freeFireFire 1s ease-in-out infinite!important;
+}
+@keyframes freeFireBadgeMove{
+  0%{background-position:0% 50%}
+  100%{background-position:300% 50%}
+}
+@keyframes freeFireBadgePulse{
+  0%,100%{transform:scale(1);box-shadow:0 0 0 1px rgba(255,255,255,.35) inset,0 4px 14px rgba(255,105,0,.22)}
+  50%{transform:scale(1.045);box-shadow:0 0 0 1px rgba(255,255,255,.45) inset,0 5px 20px rgba(255,105,0,.42)}
+}
+@keyframes freeFireBadgeShine{
+  0%,35%{transform:translateX(-130%) skewX(-18deg)}
+  70%,100%{transform:translateX(130%) skewX(-18deg)}
+}
+@keyframes freeFireFire{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-1px) rotate(5deg)}
+}
+
+/* Animated product availability/status */
+.product-status{
+  position:relative!important;
+  display:flex!important;
+  align-items:center!important;
+  gap:6px!important;
+}
+.product-status::before{
+  content:""!important;
+  width:8px!important;
+  height:8px!important;
+  flex:0 0 8px!important;
+  border-radius:50%!important;
+  background:#16a34a!important;
+  box-shadow:0 0 0 0 rgba(22,163,74,.55)!important;
+  animation:stockStatusPulse 1.5s ease-out infinite!important;
+}
+@keyframes stockStatusPulse{
+  0%{box-shadow:0 0 0 0 rgba(22,163,74,.55)}
+  70%{box-shadow:0 0 0 7px rgba(22,163,74,0)}
+  100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}
+}
+
+
+/* ===== SOLD STATUS: GRAY + BLOCK ICON ===== */
+.btn-detail.sold{
+  width:100%!important;
+  min-height:46px!important;
+  margin-top:14px!important;
+  padding:11px 14px!important;
+  border-radius:14px!important;
+  background:linear-gradient(135deg,#94a3b8,#64748b)!important;
+  color:#fff!important;
+  border:1px solid #94a3b8!important;
+  box-shadow:0 7px 16px rgba(100,116,139,.20)!important;
+  cursor:not-allowed!important;
+  display:flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  gap:7px!important;
+}
+.btn-detail.sold::before{
+  content:"⊘"!important;
+  display:inline-flex!important;
+  align-items:center!important;
+  justify-content:center!important;
+  width:18px!important;
+  height:18px!important;
+  font-size:18px!important;
+  line-height:1!important;
+  font-weight:1000!important;
 }
 
 </style>
