@@ -6100,6 +6100,20 @@ window.addEventListener("load",function(){
 const LOGIN_API =
 "https://script.google.com/macros/s/AKfycbxSn9jvZz-3KAvpuVh5uZuyD1hZ_AzrY3OSYC_d__3Srd44tdGMC4nsgf2dq8bzXaUT/exec";
 
+/* =========================================================
+   LOGIN API PRE-WARM
+   ເປີດ API ໄວ້ລ່ວງໜ້າ ເພື່ອຫຼຸດອາການ Login ຊ້າ
+   ບໍ່ກະທົບ Code.gs
+========================================================= */
+(function warmupLoginAPI(){
+  try{
+    fetch(LOGIN_API + "?warmup=" + Date.now(), {
+      method:"GET",
+      cache:"no-store"
+    }).catch(function(){});
+  }catch(e){}
+})();
+
 function openLogin(){
   sessionStorage.setItem("laogaming_warning_confirmed","1");
   const warning = document.getElementById("entryWarningModal");
@@ -6134,24 +6148,71 @@ async function authRequest(action, data){
     body.append(key, data[key] == null ? "" : data[key]);
   });
 
-  // Google Apps Script Web App: avoid custom headers so the browser does not
-  // trigger a CORS preflight request. URLSearchParams is sent as a simple POST.
-  const response = await fetch(LOGIN_API,{
-    method:"POST",
-    body:body
-  });
+  // Google Apps Script Web App:
+  // ໃຊ້ URLSearchParams ແບບເດີມ ເພື່ອຫຼີກລ້ຽງ CORS preflight.
+  // ມີ timeout ເພື່ອບໍ່ໃຫ້ Login ຄ້າງດົນ.
+  const controller = new AbortController();
 
-  const text = await response.text();
-
-  if(!response.ok){
-    throw new Error("HTTP " + response.status + ": " + text.slice(0,300));
-  }
+  const timeout = setTimeout(function(){
+    controller.abort();
+  }, 5000);
 
   try{
-    return JSON.parse(text);
-  }catch(parseError){
-    console.error("Login API returned non-JSON:", text);
-    throw new Error("Login API ບໍ່ໄດ້ສົ່ງ JSON ກັບຄືນ");
+
+    const response = await fetch(LOGIN_API,{
+      method:"POST",
+      body:body,
+      signal:controller.signal,
+      cache:"no-store"
+    });
+
+    clearTimeout(timeout);
+
+    const responseText = await response.text();
+
+    if(!response.ok){
+      console.error("Login API HTTP error:", response.status, responseText);
+      return {
+        success:false,
+        message:"HTTP_ERROR"
+      };
+    }
+
+    if(!responseText || !responseText.trim()){
+      console.error("Login API returned empty response");
+      return {
+        success:false,
+        message:"EMPTY_RESPONSE"
+      };
+    }
+
+    try{
+      return JSON.parse(responseText);
+    }catch(parseError){
+      console.error("Login API returned non-JSON:", responseText);
+      return {
+        success:false,
+        message:"INVALID_JSON"
+      };
+    }
+
+  }catch(error){
+
+    clearTimeout(timeout);
+
+    console.error("Login API error:", error);
+
+    if(error && error.name === "AbortError"){
+      return {
+        success:false,
+        message:"TIMEOUT"
+      };
+    }
+
+    return {
+      success:false,
+      message:"NETWORK_ERROR"
+    };
   }
 }
 
@@ -6329,6 +6390,7 @@ async function loginAccount(){
 
   const email = document.getElementById("loginEmail").value.trim();
   const password = document.getElementById("loginPassword").value;
+  const loginButton = document.querySelector(".login-button");
 
   if(!email || !password){
     showAuthNotice("ກະລຸນາໃສ່ Email ແລະ Password","error");
@@ -6336,6 +6398,14 @@ async function loginAccount(){
   }
 
   try{
+
+    if(loginButton){
+      loginButton.disabled = true;
+      loginButton.dataset.oldText = loginButton.textContent;
+      loginButton.textContent = "ກຳລັງເຂົ້າ...";
+      loginButton.style.opacity = "0.75";
+      loginButton.style.pointerEvents = "none";
+    }
 
     const result = await authRequest("login",{
       email:email,
@@ -6384,8 +6454,32 @@ async function loginAccount(){
 
     }else{
 
+      // ຜິດ Gmail / Password ໃຫ້ສະແດງຂໍ້ຄວາມ Login ຕາມປົກກະຕິ
+      if(result.message !== "TIMEOUT" &&
+         result.message !== "NETWORK_ERROR" &&
+         result.message !== "HTTP_ERROR" &&
+         result.message !== "EMPTY_RESPONSE" &&
+         result.message !== "INVALID_JSON"){
+
+        showAuthNotice(
+          result.message || "Email ຫຼື Password ບໍ່ຖືກຕ້ອງ",
+          "error"
+        );
+
+        return;
+      }
+
+      if(result.message === "TIMEOUT"){
+        showAuthNotice(
+          "ລະບົບຕອບຊ້າ — ກະລຸນາລອງ Login ໃໝ່",
+          "error"
+        );
+        return;
+      }
+
+      // ບໍ່ສະແດງວ່າ API ລົ້ມເຫຼວແບບຮຸນແຮງ
       showAuthNotice(
-        "Email ຫຼື Password ບໍ່ຖືກຕ້ອງ",
+        "ການເຊື່ອມຕໍ່ຊ້າ — ກະລຸນາລອງ Login ໃໝ່",
         "error"
       );
 
@@ -6393,8 +6487,21 @@ async function loginAccount(){
 
   }catch(error){
 
-    console.error(error);
-    showAuthNotice("ເຊື່ອມຕໍ່ Login API ບໍ່ສຳເລັດ","error");
+    console.error("Login error:", error);
+
+    showAuthNotice(
+      "ກະລຸນາລອງ Login ໃໝ່ອີກຄັ້ງ",
+      "error"
+    );
+
+  }finally{
+
+    if(loginButton){
+      loginButton.disabled = false;
+      loginButton.textContent = loginButton.dataset.oldText || "ເຂົ້າສູລະບົບ";
+      loginButton.style.opacity = "";
+      loginButton.style.pointerEvents = "";
+    }
 
   }
 }
