@@ -3045,6 +3045,21 @@ body.dark-mode .theme-toggle{background:#1b202b;color:#fff;border-color:#394153}
   box-shadow:0 8px 20px rgba(220,38,38,.24)!important;
   cursor:not-allowed!important;
 }
+
+.history-page{padding:30px 18px 70px;}
+.history-page-wrap{max-width:1050px;margin:0 auto;}
+.history-page-header{display:flex;align-items:center;justify-content:space-between;gap:18px;margin-bottom:18px;}
+.history-page-title{display:flex;align-items:center;gap:13px;}
+.history-page-title h2{margin:0;font-size:25px;}
+.history-page-title p{margin:4px 0 0;opacity:.68;font-size:13px;}
+.history-page-title .title-icon-box{width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:14px;}
+.history-page-title .title-icon-box svg{width:25px;height:25px;}
+.history-back-button{border:1px solid rgba(127,127,127,.22);background:var(--card,#fff);color:inherit;border-radius:12px;padding:10px 14px;display:inline-flex;align-items:center;gap:7px;font-weight:800;cursor:pointer;}
+.history-back-button svg{width:18px;height:18px;}
+.history-page .history-user-card{margin-bottom:18px;}
+.history-page .history-content{min-height:180px;}
+@media(max-width:700px){.history-page{padding:20px 12px 50px}.history-page-header{align-items:flex-start;flex-direction:column}.history-page-title h2{font-size:21px}.history-back-button{width:100%;justify-content:center}}
+
 </style>
 
 <style>
@@ -3268,7 +3283,7 @@ a8.5 8.5 0 0 1 9 8.5Z"/>
 
 </span>
 
-<span>ກ່ຽວກັບເຮົາ</span>
+<span>ຕິດຕໍ່ພວກເຮົາ</span>
 
 </button>
 
@@ -3318,9 +3333,9 @@ stroke-linejoin="round">
 <span id="profileNavName">ໂປຣໄຟລ໌</span>
 </button>
 
-<button id="historyNav" class="profile-nav-button" onclick="openHistory()">
+<button id="historyNav" class="profile-nav-button" onclick="openHistory()" aria-label="ເບິ່ງປະຫວັດການຊື້" title="ເບິ່ງປະຫວັດການຊື້">
 <span class="nav-icon-box"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7"/><path d="M3 4v5h5"/><path d="M12 7v5l3 2"/></svg></span>
-<span>ປະຫວັດຂອງຂ້ອຍ</span>
+<span>ປະຫວັດ</span>
 </button>
 
 <button id="themeToggle" class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="ປ່ຽນສີເວັບ" title="ປ່ຽນສີເວັບ"><svg id="themeToggleIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.1 2.3 2.5.4.7 2.4 2.1 1.4-1.1 2.3 1.1 2.3-2.1 1.4-.7 2.4-2.5.4L12 21l-1.1-2.3-2.5-.4-.7-2.4-2.1-1.4 1.1-2.3-1.1-2.3 2.1-1.4.7-2.4 2.5-.4L12 3Z"/><circle cx="12" cy="12" r="2.5"/></svg></button>
@@ -4347,12 +4362,12 @@ disabled>
 </div>
 
 <!-- =========================
-     MY ORDER HISTORY MODAL
+     MY ORDER HISTORY PAGE
 ========================= -->
-<div id="historyModal" class="modal" onclick="closeHistoryOutside(event)">
-  <div class="modal-box history-box">
-    <div class="modal-header">
-      <h3 class="modal-title-icon">
+<section id="history" class="page history-page">
+  <div class="history-page-wrap">
+    <div class="history-page-header">
+      <div class="history-page-title">
         <span class="title-icon-box">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M3 12a9 9 0 1 0 3-6.7"/>
@@ -4360,28 +4375,32 @@ disabled>
             <path d="M12 7v5l3 2"/>
           </svg>
         </span>
-        <span>ປະຫວັດການຊື້ຂອງຂ້ອຍ</span>
-      </h3>
-      <button class="close-modal" onclick="closeHistory()">×</button>
-    </div>
-    <div class="modal-body">
-      <div class="history-user-card">
-        <div class="history-user-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/>
-          </svg>
-        </div>
         <div>
-          <b id="historyUserName">-</b>
-          <span id="historyUserEmail">-</span>
+          <h2>ປະຫວັດການຊື້ຂອງຂ້ອຍ</h2>
+          <p>ສະແດງສະເພາະອໍເດີຂອງບັນຊີທີ່ກຳລັງເຂົ້າໃຊ້</p>
         </div>
       </div>
-      <div id="historyContent" class="history-content">
-        <div class="history-loading">ກຳລັງໂຫຼດປະຫວັດ...</div>
+      <button type="button" class="history-back-button" onclick="showPage('home')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+        <span>ກັບໜ້າຫຼັກ</span>
+      </button>
+    </div>
+    <div class="history-user-card">
+      <div class="history-user-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4 3.5-6 8-6s7.2 2 8 6"/>
+        </svg>
       </div>
+      <div>
+        <b id="historyUserName">-</b>
+        <span id="historyUserEmail">-</span>
+      </div>
+    </div>
+    <div id="historyContent" class="history-content">
+      <div class="history-loading">ກຳລັງໂຫຼດປະຫວັດ...</div>
     </div>
   </div>
-</div>
+</section>
 
 <!-- =========================
      LOGIN / REGISTER MODAL
@@ -6156,7 +6175,7 @@ async function openHistory(){
   return;
  }
 
- const modal=document.getElementById("historyModal");
+ const modal=document.getElementById("history");
  const content=document.getElementById("historyContent");
  const name=document.getElementById("historyUserName");
  const email=document.getElementById("historyUserEmail");
@@ -6165,7 +6184,8 @@ async function openHistory(){
  name.textContent=user.name||"User";
  email.textContent=user.email||"-";
  content.innerHTML='<div class="history-loading">ກຳລັງໂຫຼດປະຫວັດ...</div>';
- modal.classList.add("show");
+ showPage("history");
+ modal.classList.add("active");
 
  try{
   const emailKey=String(user.email||"").trim().toLowerCase();
@@ -6219,11 +6239,10 @@ async function openHistory(){
 }
 
 function closeHistory(){
- const modal=document.getElementById("historyModal");
- if(modal)modal.classList.remove("show");
+ showPage("home");
 }
 function closeHistoryOutside(event){
- if(event.target.id==="historyModal")closeHistory();
+ return;
 }
 
 function closePayment(){
