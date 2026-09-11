@@ -3382,6 +3382,19 @@ stroke-linejoin="round">
       <span>ລາຍການສິນຄ້າ</span>
     </button>
 
+    <button id="menuHistoryItem" class="shop-menu-item history-menu" type="button"
+            onclick="shopMenuHistory()">
+      <span class="shop-menu-icon history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12a9 9 0 1 0 3-6.7"/>
+          <path d="M3 4v5h5"/>
+          <path d="M12 7v5l3 2"/>
+        </svg>
+      </span>
+      <span>ປະຫວັດການຊື້</span>
+    </button>
+
     <button class="shop-menu-item" type="button" onclick="shopMenuContact()">
       <span class="shop-menu-icon contact">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -7285,6 +7298,11 @@ showPage = function(page){
     const gmailNav=document.getElementById("gmailNav");
     if(gmailNav)gmailNav.classList.add("active");
   }
+  if(page==="history"){
+    document.querySelectorAll(".nav button").forEach(b=>b.classList.remove("active"));
+    const historyNav=document.getElementById("historyNav");
+    if(historyNav)historyNav.classList.add("active");
+  }
 };
 
 renderGmailPageOnStart();
@@ -7306,6 +7324,7 @@ function toggleShopMenu(event){
 }
 function shopMenuGo(page){ closeShopMenu(); showPage(page); }
 function shopMenuContact(){ closeShopMenu(); openContact(); }
+function shopMenuHistory(){ closeShopMenu(); openHistory(); }
 function shopMenuRegister(){ closeShopMenu(); openLogin(); setTimeout(function(){ if(typeof showRegister==='function') showRegister(); },30); }
 function shopMenuLogin(){ closeShopMenu(); openLogin(); }
 function shopMenuProfile(){ closeShopMenu(); if(typeof openProfile==='function') openProfile(); }
@@ -8804,6 +8823,39 @@ body.dark-mode .product-title{color:#fff!important;}
   .product-title{font-size:14px!important;min-height:42px!important;}
   .product-price{font-size:17px!important;padding:9px 10px!important;}
   .product-buttons{padding-top:11px!important;}
+}
+</style>
+
+
+
+<style id="lao-history-navigation">
+/* =========================================================
+   PURCHASE HISTORY NAVIGATION
+   - History is available from every page through the header
+   - The three-dot menu also contains Purchase History
+   ========================================================= */
+.history-menu .shop-menu-icon.history{
+  color:#087cff;
+  background:#eaf6ff;
+}
+.history-menu:hover .shop-menu-icon.history{
+  color:#fff;
+  background:linear-gradient(135deg,#087cff,#20a9ff);
+}
+#historyNav{
+  display:flex;
+}
+#historyNav .nav-icon-box{
+  color:#087cff;
+  background:#eaf6ff;
+}
+#historyNav:hover .nav-icon-box,
+#historyNav.active .nav-icon-box{
+  color:#087cff;
+  background:#e2f3ff;
+}
+@media(max-width:900px){
+  #historyNav{display:flex;}
 }
 </style>
 
