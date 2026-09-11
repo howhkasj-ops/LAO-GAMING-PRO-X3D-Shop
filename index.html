@@ -6223,7 +6223,7 @@ async function authRequest(action, data){
 
   const timeout = setTimeout(function(){
     controller.abort();
-  }, 5000);
+  }, 15000);
 
   try{
 
@@ -6507,7 +6507,7 @@ async function loginAccount(){
     if(loginButton){
       loginButton.disabled = true;
       loginButton.dataset.oldText = loginButton.textContent;
-      loginButton.textContent = "ເຂົ້າສູລະບົບ";
+      loginButton.textContent = loginButton.dataset.oldText || "ເຂົ້າສູລະບົບ";
       loginButton.style.opacity = "0.75";
       loginButton.style.pointerEvents = "none";
     }
@@ -6575,7 +6575,7 @@ async function loginAccount(){
 
       if(result.message === "TIMEOUT"){
         showAuthNotice(
-          "ລະບົບຕອບຊ້າ — ກະລຸນາລອງ Login ໃໝ່",
+          "ລະບົບຕອບຊ້າ — ກະລຸນາລອງໃໝ່",
           "error"
         );
         return;
@@ -6605,7 +6605,6 @@ async function loginAccount(){
       loginButton.textContent = loginButton.dataset.oldText || "ເຂົ້າສູລະບົບ";
       loginButton.style.opacity = "";
       loginButton.style.pointerEvents = "";
-      // Login failure/loading must never log the user out.
     }
 
   }
